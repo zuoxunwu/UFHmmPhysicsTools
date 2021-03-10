@@ -1,11 +1,11 @@
 # UFHmmPhysicsTools
 UF Physics Tools for Hmm Analysis.
 
-These tools are organized into directories of `tools`, `selectors`, `analyzers`.
+These tools are organized into directories of `selectors`, `analyzers`, and `scripts`.
 
 
 ## Set Up
-These tools are made to be used in a CMSSW Environment. On LXPLUS the CMSSW Environment can be retrieved using `cmsrel`. 
+These tools are made to be used in a CMSSW Environment. On LXPLUS the CMSSW Environment can be retrieved using `cmsrel`.
 ```
 cmsrel CMSSW_10_6_19_patch2
 cd CMSSW_10_6_19_patch2/src
@@ -23,9 +23,9 @@ Finally, we can run scram to compile all moduels.
 ```
 scram b -j8
 ```
-
-## Tools
+## Analyzers
 
 ## Selectors
 
-## Analyzers
+## Scripts
+
