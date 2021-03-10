@@ -24,9 +24,9 @@ Finally, we can run scram to compile all moduels.
 scram b -j8
 ```
 ## Analyzers
-Analyzers are stored in `python/analyzers` directory and are used as imported modules by `hmm_postproc.py` to analyze events and built histograms. 
+Analyzers are stored in `python/analyzers` directory and are used as imported modules by `hmm_postproc.py` to analyze events and build histograms. 
 
-The structure of an analyzer module is two main parts
+The structure of an analyzer module comes in two main parts:
 
 * `beginJob()`
     * Initialize histograms and add them to `self`
@@ -40,8 +40,9 @@ Once an analyzer has been created it can be executed using `hmm_postproc.py`.
 python UFHmmPhysicsTools/scripts/hmm_postproc.py \
         -c "0==0" \
         -N 1000 \
-        -bi UFHmmPhysicsTools/scripts/keep_and_drop_input.txt \
-        --noout True --hdir <output-hist-directory> \
+        --bi UFHmmPhysicsTools/scripts/keep_and_drop_input.txt \
+        --noout True \
+        --hdir <output-hist-directory> \
         --hfile <output-hist-file> \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer> \
         <input-root-file>
