@@ -47,7 +47,7 @@ python UFHmmPhysicsTools/scripts/hmm_postproc.py \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer> \
         <input-root-file>
 ```
-This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create histograms at `<output-hist-directory>/<output-hist-file>`.
+This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create histograms at `<output-hist-file>` with ROOT directory `<output-hist-directory>`.
 
 ## Selectors
 
