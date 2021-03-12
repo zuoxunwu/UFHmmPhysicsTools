@@ -19,7 +19,7 @@ git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODT
 git clone git@github.com:jrotter2/UFHmmPhysicsTools.git PhysicsTools/UFHmmPhysicsTools
 ```
 
-Finally, we can run scram to compile all moduels.
+Finally, we can run scram to compile all modules.
 ```
 scram b -j8
 ```
