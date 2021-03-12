@@ -35,19 +35,19 @@ The structure of an analyzer module comes in two main parts:
     * Initialize collections, perform selections, fill histograms
 
 
-Once an analyzer has been created it can be executed using `hmm_postproc.py`.
+Once an analyzer has been created it can be executed in the `src` directory using `hmm_postproc.py`.
 ```
-python UFHmmPhysicsTools/scripts/hmm_postproc.py \
+python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
         -c "0==0" \
         -N 1000 \
-        --bi UFHmmPhysicsTools/scripts/keep_and_drop_input.txt \
+        --bi PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt \
         --noout True \
         --hdir <output-hist-directory> \
         --hfile <output-hist-file> \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer> \
         <input-root-file>
 ```
-This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create histograms at `<output-hist-file>` with ROOT directory `<output-hist-directory>`.
+This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create a ROOT file at `<output-hist-file>` relative to the `src` directory with the histogram in the ROOT directory `<output-hist-directory>`.
 
 ## Selectors
 
