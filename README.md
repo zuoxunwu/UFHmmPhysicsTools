@@ -58,13 +58,13 @@ To run `plotter.py` from the `src` directory:
 ``` 
 
 `--m ` The matching method is used to determine how the plots will be paired both between and within files. Matching plots will be overlaid in the same canvas with a legend.
-* "none"
+* `"none"`
     * No plots will be matched and will each be plotted on a different canvas
-* "name-bet-files"
+* `"name-bet-files"`
     * Plots will be matched with plots of the exact same name between each of the files
-* "name-in-files"  
+* `"name-in-files"`
     * Plots will be matched with plots of the same prefix in the same file
-* "name-bet-in-files"  or " name-in-bet-files"
+* `"name-bet-in-files"` or `" name-in-bet-files"`
     * Plots will be matched with plots of the same prefix between each of the files
 
 `--pfs` The Plot Title Prefixes are used to match plots between the same file that have the same type of data in them. This is entered as a comma seperated strng. For Example, `"nMuon, dimu_mass, mu_eta"`
