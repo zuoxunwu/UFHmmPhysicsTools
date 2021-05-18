@@ -49,22 +49,29 @@ python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
 ```
 This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create a ROOT file at `<output-hist-file>` relative to the `src` directory with the histogram in the ROOT directory `<output-hist-directory>`.
 
-### Pre-Selection and Triggers
-To modify the event loop to only loop over events that pass a given trigger combination, the pre-selection input can be changed from `0==0` to a boolean conbination of the HLT Trigger Paths. For example to apply the trigger selection `HLT_IsoMu20 or HLT_Mu20`,
-```
-python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
-        -c "HLT_IsoMu20 || HLT_Mu20" \
-        -N 1000 \
-        --bi PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt \
-        --noout True \
-        --hdir <output-hist-directory> \
-        --hfile <output-hist-file> \
-        -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer> \
-        <input-root-file>
-```
-Notice the use of `||` instead of `or`, similarly `&&` should be used in place of `and`. 
+## Plotting
+After running the analyzer and retrieving the output histograms, `plotter.py` can be used to stack, stylize, and export the plots from multiple root files to PDF format.
 
-## Selectors
+To run `plotter.py` from the `src` directory:
+```
+./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py --m <matching-method> --pfs <plot-title-prefixes> <output-pdf-dir> <root-plot-dir>  <root-files>
+``` 
 
+`--m ` The matching method is used to determine how the plots will be paired both between and within files. Matching plots will be overlaid in the same canvas with a legend.
+* "none"
+    * No plots will be matched and will each be plotted on a different canvas
+* "name-bet-files"
+    * Plots will be matched with plots of the exact same name between each of the files
+* "name-in-files"  
+    * Plots will be matched with plots of the same prefix in the same file
+* "name-bet-in-files"  or " name-in-bet-files"
+    * Plots will be matched with plots of the same prefix between each of the files
+
+`--pfs` The Plot Title Prefixes are used to match plots between the same file that have the same type of data in them. This is entered as a comma seperated strng. For Example, `"nMuon, dimu_mass, mu_eta"`
+
+All together an example command would be: 
+```
+./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py --m "name-bet-in-files" --pfs "nMuon, dimu_mass, mu_eta" /pdfs /plots hist_out_DYJets.root hist_out_ZH_HToMuMu.root
+```
 ## Scripts
 
