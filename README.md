@@ -1,7 +1,7 @@
 # UFHmmPhysicsTools
 UF Physics Tools for Hmm Analysis.
 
-These tools are organized into directories of `selectors`, `analyzers`, and `scripts`.
+These tools are organized into directories of `analyzers`, `scripts`, and `plotters`.
 
 
 ## Set Up
