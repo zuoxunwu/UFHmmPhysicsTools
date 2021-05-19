@@ -54,7 +54,7 @@ After running the analyzer and retrieving the output histograms, `plotter.py` ca
 
 To run `plotter.py` from the `src` directory:
 ```
-./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py --m <matching-method> --pfs <plot-title-prefixes> <output-pdf-dir> <root-plot-dir>  <root-files>
+./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py --m <matching-method> --pfs <plot-title-prefixes> --lbs <dict-of-prefixes-to-labels> <output-pdf-dir> <root-plot-dir>  <root-files>
 ``` 
 
 `--m ` The matching method is used to determine how the plots will be paired both between and within files. Matching plots will be overlaid in the same canvas with a legend.
@@ -69,9 +69,16 @@ To run `plotter.py` from the `src` directory:
 
 `--pfs` The Plot Title Prefixes are used to match plots between the same file that have the same type of data in them. This is entered as a comma seperated strng. For Example, `"nMuon, dimu_mass, mu_eta"`
 
+`--lbs` Adding Labels to Plots can be done through a dictionary, passed in as a string, that has the form `"{'prefix':'Main Title', 'X-Axis Title', 'Y-Axis Title'}"`. The prefix keys must match the prefixes passed in the `--pfs` option in the command.
+
 All together an example command would be: 
 ```
-./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py --m "name-bet-in-files" --pfs "nMuon, dimu_mass, mu_eta" /pdfs /plots hist_out_DYJets.root hist_out_ZH_HToMuMu.root
+./PhysicsTools/UFHmmPhysicsTools/plotting/plotter.py \
+        --m "name-bet-in-files" \
+        --pfs "nMuon, dimu_mass, mu_eta" \
+        --lbs "{'nMuon':['nMuon','Number of Muons', 'Counts'], 'dimu_mass':['diMuon Invariant Mass', 'm_{#mu^{+} #mu^{-}} (GeV/c^{2})', 'Counts'], 'mu_eta':['Muon #eta','#eta', 'Counts']}" \
+        /pdfs /plots hist_out_DYJets.root hist_out_ZH_HToMuMu.root
 ```
+ 
 ## Scripts
 
