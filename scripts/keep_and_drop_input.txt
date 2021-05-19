@@ -1,6 +1,7 @@
 #This is a comment
 drop *
 keep Muon*
+keep TrigObj*
+keep GenPart*
 #keep Electron*
 #keep Jet*
-
