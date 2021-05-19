@@ -25,9 +25,14 @@ if __name__ == "__main__":
     parser.add_option("--pfs", "--prefixes", dest="plot_prefixes",
                       type="string", default="", help="Plot Name Prefixes for Matching")
 
+    parser.add_option("--lbs", "--labels", dest="plot_labels",
+                      type="string", default="", help="Dictionary of Plot Labels")
+
     (options, args) = parser.parse_args()
     if(len(args) < 3):
         raise Exception("Please add an Output Directory, Root Directory of Plots, and Input Files to your command line call.")
+
+    label_dict = eval(options.plot_labels)
    
     inputFiles = args[2:]
 
@@ -49,7 +54,7 @@ if __name__ == "__main__":
             if(options.match == "name-bet-files"):
                 match_key = k
             if(options.match == "name-in-files"):
-                match_key = f+prefix_match(k, options.plot_prefixes)
+                match_key = prefix_match(k, options.plot_prefixes) + f
             if(options.match == "name-bet-in-files" or options.match is "name-in-bet-files"):
                 match_key = prefix_match(k, options.plot_prefixes)
 
@@ -61,7 +66,6 @@ if __name__ == "__main__":
         root_file.Close()
 
     print(matched_plots)
-
     canv2 = ROOT.TCanvas("overlay","Stack canvas",400,400)
     try:
         os.mkdir("."+args[0])
@@ -71,7 +75,8 @@ if __name__ == "__main__":
     canv2.Print( "."+args[0] + "/plots.pdf" +"[")
     for k in matched_plots.keys():
         line_color_index = 1
-        stack = ROOT.THStack("stack","stack")
+
+        stack = ROOT.THStack(label_dict[prefix_match(k, options.plot_prefixes)][0],label_dict[prefix_match(k, options.plot_prefixes)][0])
         legend = ROOT.TLegend (0.7 ,0.6 ,0.85 ,0.75)
         for plot in matched_plots[k]:
             plot.SetLineColor(line_color_index)
@@ -80,7 +85,11 @@ if __name__ == "__main__":
                 line_color_index = line_color_index + 1;
             stack.Add(plot)
             legend.AddEntry (plot,k + " " + plot.GetTitle())
+
         stack.Draw("nostack")
+        stack.GetXaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][1])
+        stack.GetYaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][2])
+
         legend.SetLineWidth (0)
         legend.Draw ("same")
         canv2.Print("."+args[0] + "/plots.pdf")
@@ -89,4 +98,4 @@ if __name__ == "__main__":
 
     print(root_plots)
     print(matched_plots)
-    print(options, args);
+    print(options, args)
