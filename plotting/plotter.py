@@ -3,6 +3,8 @@ from importlib import import_module
 import os
 import sys
 import ROOT
+import random
+
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 def prefix_match(key, prefixes):
@@ -51,6 +53,8 @@ if __name__ == "__main__":
                 continue
             plot.SetDirectory(0)
             match_key = ""
+            if(options.match == "none"):
+                match_key = k + str(random.random())
             if(options.match == "name-bet-files"):
                 match_key = k
             if(options.match == "name-in-files"):
@@ -74,24 +78,34 @@ if __name__ == "__main__":
         open("."+args[0] + "/plots.pdf", 'a').close()
     canv2.Print( "."+args[0] + "/plots.pdf" +"[")
     for k in matched_plots.keys():
-        line_color_index = 1
-
-        stack = ROOT.THStack(label_dict[prefix_match(k, options.plot_prefixes)][0],label_dict[prefix_match(k, options.plot_prefixes)][0])
+        line_color_index = 1       
+        stack = ROOT.THStack(label_dict[prefix_match(k, options.plot_prefixes)][0],"")
         legend = ROOT.TLegend (0.7 ,0.6 ,0.85 ,0.75)
+        legend.SetTextSize(.02)
         for plot in matched_plots[k]:
             plot.SetLineColor(line_color_index)
             line_color_index = line_color_index + 1
             if(line_color_index in [10, 5, 16,17,18,19,41]):
                 line_color_index = line_color_index + 1;
             stack.Add(plot)
-            legend.AddEntry (plot,k + " " + plot.GetTitle())
+            if(options.match == "none"):
+                legend.AddEntry(plot, plot.GetTitle())
+            else:
+                legend.AddEntry(plot,k + " " + plot.GetTitle())
 
         stack.Draw("nostack")
         stack.GetXaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][1])
         stack.GetYaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][2])
-
+        latex = ROOT.TLatex()
+        latex.SetNDC()
+        latex.SetTextSize(0.04)
+        latex.DrawLatex(0.12 ,0.85 , "CMS #font[52]{Preliminary Simulation}")
+        latex.SetTextSize(0.03)
+        latex.DrawLatex(0.12 ,0.82 , "#font[52]{#it{"+label_dict[prefix_match(k, options.plot_prefixes)][0]+"}}")
+        latex.SetTextSize(0.02)
+        latex.DrawLatex(0.80 ,0.91 , "#font[52]{#it{(13 TeV)}}")
         legend.SetLineWidth (0)
-        legend.Draw ("same")
+        legend.Draw("same")
         canv2.Print("."+args[0] + "/plots.pdf")
 
     canv2.Print("."+args[0] + "/plots.pdf" +"]")
