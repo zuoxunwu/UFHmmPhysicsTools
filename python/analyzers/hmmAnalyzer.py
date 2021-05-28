@@ -13,38 +13,52 @@ class hmmAnalyzer(Module):
     def beginJob(self, histFile=None, histDirName=None):
         Module.beginJob(self, histFile, histDirName)
         print("starting module")
-        self.h_nMu_no_sel = ROOT.TH1F('nMuons_no_sel', 'nMuons_no_sel', 10, 0, 10)
-        self.h_nMu_pt_sel = ROOT.TH1F('nMuons_pt_sel', 'nMuons_pt_sel', 10, 0, 10)
-        self.h_nMu_pt_eta = ROOT.TH1F('nMuons_pt_eta', 'nMuons_pt_sel', 10, 0, 10)
-        self.h_nMu_pt_eta_trig = ROOT.TH1F('nMuons_pt_eta_trig', 'nMuons_pt_sel_trig', 10, 0, 10)
-        self.h_nMu_pt_eta_trig_genPart = ROOT.TH1F('nMuons_pt_eta_trig_genPart', 'nMuons_pt_sel_trig_genPart', 10, 0, 10)
 
-        self.h_dimu_mass_no_sel = ROOT.TH1F('dimu_mass_no_sel', 'dimu_mass_no_sel', 200, 0, 200)
-        self.h_dimu_mass_pt_sel = ROOT.TH1F('dimu_mass_pt_sel', 'dimu_mass_pt_sel', 200, 0, 200)
-        self.h_dimu_mass_pt_eta = ROOT.TH1F('dimu_mass_pt_eta', 'dimu_mass_pt_eta', 200, 0, 200)
-        self.h_dimu_mass_pt_eta_trig = ROOT.TH1F('dimu_mass_pt_eta_trig', 'dimu_mass_pt_eta_trig', 200, 0, 200)
-        self.h_dimu_mass_pt_eta_trig_genPart = ROOT.TH1F('dimu_mass_pt_eta_trig_genPart', 'dimu_mass_pt_eta_trig_genPart', 200, 0, 200)
+        self.nMuon_raw = ROOT.TH1F('rnMuon_raw', 'No Selection', 10, -0.5, 9.5)
+        self.eta_raw = ROOT.TH1F('reta_raw', 'No Selection', 100, -5, 5)
+        self.pt_raw = ROOT.TH1F('rpt_raw', 'No Selection', 200, 0, 200)
 
-        self.h_mu_eta_no_sel = ROOT.TH1F('mu_eta_no_sel', 'mu_eta_no_sel', 200, -5, 5)
-        self.h_mu_eta_pt_sel = ROOT.TH1F('mu_eta_pt_sel', 'mu_eta_pt_sel', 200, -5, 5)
-        self.h_mu_eta_pt_eta = ROOT.TH1F('mu_eta_pt_eta', 'mu_eta_pt_eta', 200, -5, 5)
-        self.h_mu_eta_pt_eta_trig = ROOT.TH1F('mu_eta_pt_eta_trig', 'mu_eta_pt_eta_trig', 200, -5, 5)
-        self.h_mu_eta_pt_eta_trig_genPart = ROOT.TH1F('mu_eta_pt_eta_trig_genPart', 'mu_eta_pt_eta_trig_genPart', 200, -5, 5)
-        self.addObject(self.h_nMu_no_sel)
-        self.addObject(self.h_nMu_pt_sel)
-        self.addObject(self.h_nMu_pt_eta)
-        self.addObject(self.h_nMu_pt_eta_trig)
-        self.addObject(self.h_nMu_pt_eta_trig_genPart)
-        self.addObject(self.h_dimu_mass_no_sel)
-        self.addObject(self.h_dimu_mass_pt_sel)
-        self.addObject(self.h_dimu_mass_pt_eta)
-        self.addObject(self.h_dimu_mass_pt_eta_trig)
-        self.addObject(self.h_dimu_mass_pt_eta_trig_genPart)
-        self.addObject(self.h_mu_eta_no_sel)
-        self.addObject(self.h_mu_eta_pt_sel)
-        self.addObject(self.h_mu_eta_pt_eta)
-        self.addObject(self.h_mu_eta_pt_eta_trig)
-        self.addObject(self.h_mu_eta_pt_eta_trig_genPart)
+	self.eta_kin_cut = ROOT.TH1F('eta_kin_cut', '26 GeV pT Cut', 100, -5, 5)
+        self.pt_kin_cut = ROOT.TH1F('pt_kin_cut', '26 GeV pT Cut', 200, 0, 200)
+        self.dimu_kin_cut = ROOT.TH1F('dimu_kin_cut', '26 GeV pT Cut', 200, 0, 200)
+
+        self.eta_trig_cut = ROOT.TH1F('eta_trig_cut', 'Trigger Matching Cut', 100, -5, 5)
+        self.pt_trig_cut = ROOT.TH1F('pt_trig_cut', 'Trigger Matching Cut', 200, 0, 200)
+        self.dimu_trig_cut = ROOT.TH1F('dimu_trig_cut', 'Trigger Matching Cut', 200, 0, 200)
+
+        self.eta_gen_cut = ROOT.TH1F('eta_gen_cut', 'GenPart Matching Cut', 100, -5, 5)
+        self.pt_gen_cut = ROOT.TH1F('pt_gen_cut', 'GenPart Matching Cut', 200, 0, 200)
+        self.dimu_gen_cut = ROOT.TH1F('dimu_gen_cut', 'GenPart Matching Cut', 200, 0, 200)
+
+        self.eta_final = ROOT.TH1F('eta_final', 'Accepted', 100, -5, 5)
+        self.pt_final = ROOT.TH1F('pt_final', 'Accepted', 200, 0, 200)
+        self.dimu_final = ROOT.TH1F('dimu_final', 'Accepted', 200, 0, 200)
+
+        self.dimu_beforeFSR = ROOT.TH1F('fsr_before', 'Before FSR Correction', 200, 0, 200)
+        self.dimu_afterFSR = ROOT.TH1F('fsr_after', 'After FSR Correction', 200, 0, 200)
+
+        self.addObject(self.nMuon_raw)
+        self.addObject(self.eta_raw)
+        self.addObject(self.pt_raw)
+
+        self.addObject(self.eta_kin_cut)
+        self.addObject(self.pt_kin_cut)
+        self.addObject(self.dimu_kin_cut)
+
+        self.addObject(self.eta_trig_cut)
+        self.addObject(self.pt_trig_cut)
+        self.addObject(self.dimu_trig_cut)
+
+        self.addObject(self.eta_gen_cut)
+        self.addObject(self.pt_gen_cut)
+        self.addObject(self.dimu_gen_cut)
+
+        self.addObject(self.eta_final)
+        self.addObject(self.pt_final)
+        self.addObject(self.dimu_final)
+
+        self.addObject(self.dimu_beforeFSR)
+        self.addObject(self.dimu_afterFSR)
         print("finished making hists")
         pass
 
@@ -61,21 +75,25 @@ class hmmAnalyzer(Module):
 
     def checkGenDaughters(self, genPart, motherPartIdx):
         for g in genPart:
-            print(g.genPartIdxMother, g.pdgId)
+            #print(g.genPartIdxMother, g.pdgId)
             if(g.genPartIdxMother == motherPartIdx and g.pdgId == 22):
-                return g.p4()
+                return g
         return False
 
     def checkGenParents(self, muons, genPart):
         doesPass_gen_parent_cut = True
-        p4_FSR = any
+        p4_FSR = None
         if(not genPart):
             return True
         for mu in muons:
-            parent_pdgId = genPart[genPart[mu.genPartIdx].genPartIdxMother].pdgId
+            if(mu.genPartIdx < 0):
+                continue
+            parent_pdgId = abs(genPart[genPart[mu.genPartIdx].genPartIdxMother].pdgId)
             #23 -> Z boson, 25 -> Higgs
             if(abs(parent_pdgId) == 13 and genPart[genPart[genPart[mu.genPartIdx].genPartIdxMother].genPartIdxMother].pdgId == 25):
-                p4_FSR = self.checkGenDaughters(genPart, genPart[mu.genPartIdx].genPartIdxMother)
+                g = self.checkGenDaughters(genPart, genPart[mu.genPartIdx].genPartIdxMother)
+                if(g):
+                    p4_FSR = g.p4()
             if(parent_pdgId != 23 and parent_pdgId != 25):
                 doesPass_gen_parent_cut = False
         return doesPass_gen_parent_cut, p4_FSR
@@ -84,7 +102,7 @@ class hmmAnalyzer(Module):
         doesPass = False
         trigObjIndex = -1
         for i in range(0, len(trigObj)):
-            if(abs(trigObj[i].id) == 13 and len(str(bin(trigObj[i].filterBits))) > 4 and str(bin(trigObj[i].filterBits))[4] is "1"):
+            if(abs(trigObj[i].id) == 13 and len(str(bin(trigObj[i].filterBits))) > 4 and str(bin(trigObj[i].filterBits))[len(str(bin(trigObj[i].filterBits)))-4] is "1"):
                 doesPass = True
                 trigObjIndex = i
         return doesPass, trigObjIndex
@@ -96,65 +114,80 @@ class hmmAnalyzer(Module):
         genPart = Collection(event, "GenPart")
 
         #Fill Histograms Before Selection
-        self.h_nMu_no_sel.Fill(len(muons))
+        self.nMuon_raw.Fill(len(muons))
+        for mu in muons:
+            self.eta_raw.Fill(mu.eta)
+            self.pt_raw.Fill(mu.pt)
 
-        #Fill Histograms After Selecting Events with exactly 2 Muons
+        #Selecting Events with exactly 2 Muons
         if(not len(muons)==2):
+            for mu in muons:
+                self.eta_kin_cut.Fill(mu.eta)
+                self.pt_kin_cut.Fill(mu.pt)
             return True
         dimu = muons[0].p4() + muons[1].p4()
-        self.h_dimu_mass_no_sel.Fill(dimu.M())
-        self.h_mu_eta_no_sel.Fill(muons[0].eta)
-        self.h_mu_eta_no_sel.Fill(muons[1].eta)
 
         #Applying PT cuts
         if(not muons[0].pt > 26 or not muons[1].pt > 26):
+            self.eta_kin_cut.Fill(muons[0].eta)
+            self.eta_kin_cut.Fill(muons[1].eta)
+            self.pt_kin_cut.Fill(muons[0].pt)
+            self.pt_kin_cut.Fill(muons[1].pt)
+            self.dimu_kin_cut.Fill(dimu.M())
             return True
-        self.h_nMu_pt_sel.Fill(len(muons))
         dimu = muons[0].p4() + muons[1].p4()
-        self.h_dimu_mass_pt_sel.Fill(dimu.M())
-        self.h_mu_eta_pt_sel.Fill(muons[0].eta)
-        self.h_mu_eta_pt_sel.Fill(muons[1].eta)
 
         #Applying ETA cuts
         if(not abs(muons[0].eta) < 2.4 or not abs(muons[1].eta) < 2.4):
+            self.eta_kin_cut.Fill(muons[0].eta)
+            self.eta_kin_cut.Fill(muons[1].eta)
+            self.pt_kin_cut.Fill(muons[0].pt)
+            self.pt_kin_cut.Fill(muons[1].pt)
+            self.dimu_kin_cut.Fill(dimu.M())
             return True
-        self.h_nMu_pt_eta.Fill(len(muons))
         dimu = muons[0].p4() + muons[1].p4()
-        self.h_dimu_mass_pt_eta.Fill(dimu.M())
-        self.h_mu_eta_pt_eta.Fill(muons[0].eta)
-        self.h_mu_eta_pt_eta.Fill(muons[1].eta)
 
         #Applying Trigger Selection cuts
         doesPassTrigSelection, trigObjIndex = self.trigObjSelector(trigObj)
         if(not doesPassTrigSelection):
+            self.eta_trig_cut.Fill(muons[0].eta)
+            self.eta_trig_cut.Fill(muons[1].eta)
+            self.pt_trig_cut.Fill(muons[0].pt)
+            self.pt_trig_cut.Fill(muons[1].pt)
+            self.dimu_trig_cut.Fill(dimu.M())
             return True
         #Applying dR Selection to match Trigger Object to the muons tested.
         if(not self.dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[0].eta, muons[0].phi) and not self.dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[1].eta, muons[1].phi)):
+            self.eta_trig_cut.Fill(muons[0].eta)
+            self.eta_trig_cut.Fill(muons[1].eta)
+            self.pt_trig_cut.Fill(muons[0].pt)
+            self.pt_trig_cut.Fill(muons[1].pt)
+            self.dimu_trig_cut.Fill(dimu.M())
             return True
-
-        self.h_nMu_pt_eta_trig.Fill(len(muons))
-        self.h_dimu_mass_pt_eta_trig.Fill(dimu.M())
-        self.h_mu_eta_pt_eta_trig.Fill(muons[0].eta)
-        self.h_mu_eta_pt_eta_trig.Fill(muons[1].eta)
-        
+        #Applying GenPart cut for MC
         checkGenParents, p4_FSR = self.checkGenParents(muons, genPart)
-        if(not checkGenParents):
+        print p4_FSR, checkGenParents
+        if(not checkGenParents and not p4_FSR):
+            self.eta_gen_cut.Fill(muons[0].eta)
+            self.eta_gen_cut.Fill(muons[1].eta)
+            self.pt_gen_cut.Fill(muons[0].pt)
+            self.pt_gen_cut.Fill(muons[1].pt)
+            self.dimu_gen_cut.Fill(dimu.M())
             return True
+        #Correcting for FSR
         if(p4_FSR):
-            dimu = muons[0].p4() + muons[1].p4() + p4_FSR.p4()
-        self.h_nMu_pt_eta_trig_genPart.Fill(len(muons))
-        self.h_dimu_mass_pt_eta_trig_genPart.Fill(dimu.M())
-        self.h_mu_eta_pt_eta_trig_genPart.Fill(muons[0].eta)
-        self.h_mu_eta_pt_eta_trig_genPart.Fill(muons[1].eta)
-
-
-#        if(doesPassTrigSelection):
-#            if(len(muons) == 2 and muons[0].charge*muons[1].charge < 0):
-#                if(dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[0].eta, muons[0].phi) or dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[1].eta, muons[1].phi)):
-#                    if(pT_etaSelection(muons)):
-#                        if(checkGenParents(muons, genPart)):   
-        #self.h_nMu.Fill(len(muons))
-        #dimu = muons[0].p4() + muons[1].p4()
-        #self.h_dimu_mass.Fill(dimu.M())
-
+            self.dimu_beforeFSR.Fill(dimu.M())
+            dimu = dimu + p4_FSR
+            self.dimu_afterFSR.Fill(dimu.M())
+        #Adding to final histogram
+        self.eta_final.Fill(muons[0].eta)
+        self.eta_final.Fill(muons[1].eta)
+        self.pt_final.Fill(muons[0].pt)
+        self.pt_final.Fill(muons[1].pt)
+        self.dimu_final.Fill(dimu.M())
         return True
+
+
+# define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed
+#hmmAnalyzer = lambda: hmmAnalyzer()
+
