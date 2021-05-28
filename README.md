@@ -82,6 +82,4 @@ All together an example command would be:
         --lbs "{'nMuon':['nMuon','Number of Muons', 'Counts'], 'dimu_mass':['diMuon Invariant Mass', 'm_{#mu^{+} #mu^{-}} (GeV/c^{2})', 'Counts'], 'mu_eta':['Muon #eta','#eta', 'Counts']}" \
         /pdfs /plots hist_out_DYJets.root hist_out_ZH_HToMuMu.root
 ```
- 
-## Scripts
 
