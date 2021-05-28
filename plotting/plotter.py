@@ -47,8 +47,9 @@ if __name__ == "__main__":
         root_dir = root_file.GetDirectory(args[1])
         root_keys = root_dir.GetListOfKeys()
 	for key in root_keys:
-            k = key.GetTitle()
-            plot = root_dir.Get(key.GetTitle())
+            k = key.GetName()
+            plot = root_dir.Get(key.GetName())
+            print(k, key, key.GetTitle())
             if(not plot):
                 continue
             plot.SetDirectory(0)
@@ -78,12 +79,14 @@ if __name__ == "__main__":
         open("."+args[0] + "/plots.pdf", 'a').close()
     canv2.Print( "."+args[0] + "/plots.pdf" +"[")
     for k in matched_plots.keys():
-        line_color_index = 1       
+        line_color_index = 1     
         stack = ROOT.THStack(label_dict[prefix_match(k, options.plot_prefixes)][0],"")
-        legend = ROOT.TLegend (0.7 ,0.6 ,0.85 ,0.75)
+        legend = ROOT.TLegend (0.65 ,0.6 ,0.85 ,0.75)
         legend.SetTextSize(.02)
-        for plot in matched_plots[k]:
+        for i in range(1,len(matched_plots[k])+1):
+            plot = matched_plots[k][len(matched_plots[k])-i]
             plot.SetLineColor(line_color_index)
+            plot.SetFillColorAlpha(line_color_index, 0.3)
             line_color_index = line_color_index + 1
             if(line_color_index in [10, 5, 16,17,18,19,41]):
                 line_color_index = line_color_index + 1;
@@ -91,9 +94,12 @@ if __name__ == "__main__":
             if(options.match == "none"):
                 legend.AddEntry(plot, plot.GetTitle())
             else:
-                legend.AddEntry(plot,k + " " + plot.GetTitle())
-
-        stack.Draw("nostack")
+                legend.AddEntry(plot,plot.GetTitle())
+        if(not k == "fsr"):
+            stack.Draw()
+        else:
+            print("here")
+            stack.Draw("nostack")
         stack.GetXaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][1])
         stack.GetYaxis().SetTitle(label_dict[prefix_match(k, options.plot_prefixes)][2])
         latex = ROOT.TLatex()
