@@ -19,7 +19,7 @@ if __name__ == "__main__":
     parser.add_option("--hdir", "--hist-dir-name", dest="histDirName",
                       type="string", default="plots", help="Output directory for Histograms")
     parser.add_option("--hfile", "--hist-file-name", dest="histFileName",
-                      type="string", default=None, help="Histogram output file")
+                      type="string", default="hist_out.root", help="Histogram output file")
     parser.add_option("-b", "--branch-selection", dest="branchsel",
                       type="string", default=None, help="Branch selection")
     parser.add_option("--bi", "--branch-selection-input", dest="branchsel_in",
