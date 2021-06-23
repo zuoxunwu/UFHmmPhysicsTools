@@ -11,7 +11,15 @@ cmsrel CMSSW_10_6_19_patch2
 cd CMSSW_10_6_19_patch2/src
 
 cmsenv
+voms-proxy-init --voms cms
 ```
+
+Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
+```
+cmsenv
+voms-proxy-init --voms cms
+```
+
 
 Additionally, these tools depend on the NanoAOD tools. We can get these analysis tools and the NanoAOD tools and put them into the `src` directories of the CMSSW Environment.
 ```
@@ -25,6 +33,8 @@ scram b -j8
 ```
 ## Scripts
 The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is the `keep_and_drop_input.txt` file which controls which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
+
+Additionally, in the `scripts` directory there is a text file that has dataset information written in JSON format in `dataset_config.txt` this is where you can add dataset parameters such as files, MC flags, or other options. 
 
 ## Analyzers
 Analyzers are stored in `python/analyzers` directory and are used as imported modules by `hmm_postproc.py` to analyze events and build histograms. 
@@ -51,6 +61,16 @@ python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
         <input-root-file>
 ```
 This will run the module found at `PhysicsTools/UFHmmPhysicsTools/python/analyzers/<your-analyzer>` and create a ROOT file at `<output-hist-file>` relative to the `src` directory with the histogram in the ROOT directory `<output-hist-directory>`.
+
+Alternatively, you can add your datasets to the `dataset_config.txt` file in the `scripts` directory to easily call your analyzer on a specific set of input root files. Then you can run the analyzer using,
+```
+python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
+        -N 1000 \
+        --ds "<dataset-name>" \
+        --hdir <output-hist-directory> \
+        --hfile <output-hist-file> \
+        -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer>
+```
 
 ## Plotting
 After running the analyzer and retrieving the output histograms, `plotter.py` can be used to stack, stylize, and export the plots from multiple root files to PDF format.
