@@ -4,6 +4,7 @@ from importlib import import_module
 import os
 import sys
 import ROOT
+import json
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 if __name__ == "__main__":
@@ -14,15 +15,15 @@ if __name__ == "__main__":
     parser.add_option("-J", "--json", dest="json", type="string",
                       default=None, help="Select events using this JSON file")
     parser.add_option("-c", "--cut", dest="cut", type="string",
-                      default=None, help="Cut string")
+                      default="0==0", help="Cut string")
     parser.add_option("--hdir", "--hist-dir-name", dest="histDirName",
-                      type="string", default=None, help="Output directory for Histograms")
+                      type="string", default="plots", help="Output directory for Histograms")
     parser.add_option("--hfile", "--hist-file-name", dest="histFileName",
                       type="string", default=None, help="Histogram output file")
     parser.add_option("-b", "--branch-selection", dest="branchsel",
                       type="string", default=None, help="Branch selection")
     parser.add_option("--bi", "--branch-selection-input", dest="branchsel_in",
-                      type="string", default=None, help="Branch selection input")
+                      type="string", default="PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt", help="Branch selection input")
     parser.add_option("--bo", "--branch-selection-output", dest="branchsel_out",
                       type="string", default=None, help="Branch selection output")
     parser.add_option("--friend", dest="friend", action="store_true", default=False,
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     parser.add_option("--full", dest="friend", action="store_false", default=False,
                       help="Produce full trees in output (this is the current default)")
     parser.add_option("--noout", dest="noOut", action="store_true",
-                      default=False, help="Do not produce output, just run modules")
+                      default=True, help="Do not produce output, just run modules")
     parser.add_option("-P", "--prefetch", dest="prefetch", action="store_true", default=False,
                       help="Prefetch input files locally instead of accessing them via xrootd")
     parser.add_option("--long-term-cache", dest="longTermCache", action="store_true", default=False,
@@ -43,10 +44,22 @@ if __name__ == "__main__":
                       action="store_true", help="Just report the number of selected events")
     parser.add_option("-I", "--import", dest="imports", type="string", default=[], action="append",
                       nargs=2, help="Import modules (python package, comma-separated list of ")
+    parser.add_option("--ds", "--dataset", dest="dataset", type="string", default=None,
+                      help="Dataset to fetch files from (check dataset_config.txt)")
     parser.add_option("-z", "--compression", dest="compression", type="string",
                       default=("LZMA:9"), help="Compression: none, or (algo):(level) ")
 
     (options, args) = parser.parse_args()
+    if(options.dataset):
+        if(len(args)==0):
+            args.append("True")
+        config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config.txt", "r")
+        config_file_contents = config_file.read()
+        config = json.loads(config_file_contents)
+        for f in config[options.dataset]["files"]:
+            args.append("root://cmsxrootd.fnal.gov//"+f)
+
+    print(args)
 
     if options.friend:
         if options.cut or options.json:
