@@ -1,0 +1,26 @@
+{
+    "ggH_test":
+        {
+            "files":[
+                    "/store/mc/RunIIAutumn18NanoAODv7/GluGluHToMuMu_M125_TuneCP5_PSweights_13TeV_amcatnloFXFX_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/4FA4D948-38F7-6A4C-BBD6-33FA5A37EEA9.root"
+                ]
+        },
+    "ggH":
+        {
+            "files":[
+                    "/store/mc/RunIIAutumn18NanoAODv7/GluGluHToMuMu_M125_TuneCP5_PSweights_13TeV_amcatnloFXFX_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/4FA4D948-38F7-6A4C-BBD6-33FA5A37EEA9.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/GluGluHToMuMu_M125_TuneCP5_PSweights_13TeV_amcatnloFXFX_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/AFFB5F99-55AC-7149-8FA4-62D4525D65CA.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/GluGluHToMuMu_M125_TuneCP5_PSweights_13TeV_amcatnloFXFX_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/E7FD6429-E3B5-C34E-8B0C-4EE3ACE2E351.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/GluGluHToMuMu_M125_TuneCP5_PSweights_13TeV_amcatnloFXFX_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/EEBFF35C-E886-514C-9244-9A4BAA947A0B.root"
+                    ]
+        },
+    "ZH":
+        {
+            "files":[
+                    "/store/mc/RunIIAutumn18NanoAODv7/ZH_HToMuMu_ZToAll_M125_TuneCP5_PSweights_13TeV_powheg_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/718B68D0-C866-9F43-BD48-1229A3DFB69E.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/ZH_HToMuMu_ZToAll_M125_TuneCP5_PSweights_13TeV_powheg_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/BCF703DA-1C27-9B45-BA97-6DB519535E1F.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/ZH_HToMuMu_ZToAll_M125_TuneCP5_PSweights_13TeV_powheg_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/100000/E9A0B0B4-6568-DB4F-94E1-ADCB3C05A0D7.root",
+                    "/store/mc/RunIIAutumn18NanoAODv7/ZH_HToMuMu_ZToAll_M125_TuneCP5_PSweights_13TeV_powheg_pythia8/NANOAODSIM/Nano02Apr2020_102X_upgrade2018_realistic_v21-v1/110000/48D2F9F3-ABA5-5642-A295-8DF9B8E4E223.root"
+                    ]
+        }
+}
