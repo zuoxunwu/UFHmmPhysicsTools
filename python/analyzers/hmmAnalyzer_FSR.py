@@ -1,4 +1,4 @@
-
+import math as Math
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 import ROOT
@@ -14,51 +14,27 @@ class hmmAnalyzer_FSR(Module):
         Module.beginJob(self, histFile, histDirName)
         print("starting module")
 
-        self.nMuon_raw = ROOT.TH1F('rnMuon_raw', 'No Selection', 10, -0.5, 9.5)
-        self.eta_raw = ROOT.TH1F('reta_raw', 'No Selection', 100, -5, 5)
-        self.pt_raw = ROOT.TH1F('rpt_raw', 'No Selection', 200, 0, 200)
+        self.dimu_no_GP = ROOT.TH1F('allGP_noFSR', 'No FSR', 200, 0, 200)
+        self.dimu_with_GP = ROOT.TH1F('allGP_withFSR', 'With FSR', 200, 0, 200)
+        self.dimu_no_ND = ROOT.TH1F('allND_noFSR', 'No FSR', 200, 0, 200)
+        self.dimu_with_ND = ROOT.TH1F('allND_withFSR', 'With FSR', 200, 0, 200)
 
-	self.eta_kin_cut = ROOT.TH1F('eta_kin_cut', '26 GeV pT Cut', 100, -5, 5)
-        self.pt_kin_cut = ROOT.TH1F('pt_kin_cut', '26 GeV pT Cut', 200, 0, 200)
-        self.dimu_kin_cut = ROOT.TH1F('dimu_kin_cut', '26 GeV pT Cut', 200, 0, 200)
+        self.dimu_ND_FSR_B = ROOT.TH1F('ND_fsr_before', 'Before FSR Correction', 200, 0, 200)
+        self.dimu_ND_FSR_A = ROOT.TH1F('ND_fsr_after', 'After FSR Correction', 200, 0, 200)
 
-        self.eta_trig_cut = ROOT.TH1F('eta_trig_cut', 'Trigger Matching Cut', 100, -5, 5)
-        self.pt_trig_cut = ROOT.TH1F('pt_trig_cut', 'Trigger Matching Cut', 200, 0, 200)
-        self.dimu_trig_cut = ROOT.TH1F('dimu_trig_cut', 'Trigger Matching Cut', 200, 0, 200)
+        self.dimu_GP_FSR_B = ROOT.TH1F('GP_fsr_before', 'Before FSR Correction', 200, 0, 200)
+        self.dimu_GP_FSR_A = ROOT.TH1F('GP_fsr_after', 'After FSR Correction', 200, 0, 200)
 
-        self.eta_gen_cut = ROOT.TH1F('eta_gen_cut', 'GenPart Matching Cut', 100, -5, 5)
-        self.pt_gen_cut = ROOT.TH1F('pt_gen_cut', 'GenPart Matching Cut', 200, 0, 200)
-        self.dimu_gen_cut = ROOT.TH1F('dimu_gen_cut', 'GenPart Matching Cut', 200, 0, 200)
+        self.addObject(self.dimu_no_GP)
+        self.addObject(self.dimu_with_GP)
+        self.addObject(self.dimu_no_ND)
+        self.addObject(self.dimu_with_ND)
 
-        self.eta_final = ROOT.TH1F('eta_final', 'Accepted', 100, -5, 5)
-        self.pt_final = ROOT.TH1F('pt_final', 'Accepted', 200, 0, 200)
-        self.dimu_final = ROOT.TH1F('dimu_final', 'Accepted', 200, 0, 200)
+        self.addObject(self.dimu_ND_FSR_B)
+        self.addObject(self.dimu_ND_FSR_A)
+        self.addObject(self.dimu_GP_FSR_B)
+        self.addObject(self.dimu_GP_FSR_A)
 
-        self.dimu_beforeFSR = ROOT.TH1F('fsr_before', 'Before FSR Correction', 200, 0, 200)
-        self.dimu_afterFSR = ROOT.TH1F('fsr_after', 'After FSR Correction', 200, 0, 200)
-
-        self.addObject(self.nMuon_raw)
-        self.addObject(self.eta_raw)
-        self.addObject(self.pt_raw)
-
-        self.addObject(self.eta_kin_cut)
-        self.addObject(self.pt_kin_cut)
-        self.addObject(self.dimu_kin_cut)
-
-        self.addObject(self.eta_trig_cut)
-        self.addObject(self.pt_trig_cut)
-        self.addObject(self.dimu_trig_cut)
-
-        self.addObject(self.eta_gen_cut)
-        self.addObject(self.pt_gen_cut)
-        self.addObject(self.dimu_gen_cut)
-
-        self.addObject(self.eta_final)
-        self.addObject(self.pt_final)
-        self.addObject(self.dimu_final)
-
-        self.addObject(self.dimu_beforeFSR)
-        self.addObject(self.dimu_afterFSR)
         print("finished making hists")
         pass
 
@@ -75,7 +51,6 @@ class hmmAnalyzer_FSR(Module):
 
     def checkGenDaughters(self, genPart, motherPartIdx):
         for g in genPart:
-            #print(g.genPartIdxMother, g.pdgId)
             if(g.genPartIdxMother == motherPartIdx and g.pdgId == 22):
                 return g
         return False
@@ -93,7 +68,11 @@ class hmmAnalyzer_FSR(Module):
             if(abs(parent_pdgId) == 13 and genPart[genPart[genPart[mu.genPartIdx].genPartIdxMother].genPartIdxMother].pdgId == 25):
                 g = self.checkGenDaughters(genPart, genPart[mu.genPartIdx].genPartIdxMother)
                 if(g):
-                    p4_FSR = g.p4()
+                    if(g.pt > 2 and (abs(g.eta) < 1.4 or (abs(g.eta) > 1.6 and abs(g.eta) < 2.4))):
+                        dR = ((g.eta-mu.eta)**2 + (g.phi-mu.phi)**2)**(.5)
+                        if(dR < .5):
+                            if(g.pt/mu.pt < 0.4):
+                                p4_FSR = g.p4()
             if(parent_pdgId != 23 and parent_pdgId != 25):
                 doesPass_gen_parent_cut = False
         return doesPass_gen_parent_cut, p4_FSR
@@ -112,79 +91,67 @@ class hmmAnalyzer_FSR(Module):
         muons = Collection(event, "Muon")
         trigObj = Collection(event, "TrigObj")
         genPart = Collection(event, "GenPart")
-
-        #Fill Histograms Before Selection
-        self.nMuon_raw.Fill(len(muons))
-        for mu in muons:
-            self.eta_raw.Fill(mu.eta)
-            self.pt_raw.Fill(mu.pt)
+        fsrPhotons = Collection(event, "FsrPhoton")
 
         #Selecting Events with exactly 2 Muons
         if(not len(muons)==2):
-            for mu in muons:
-                self.eta_kin_cut.Fill(mu.eta)
-                self.pt_kin_cut.Fill(mu.pt)
             return True
-        dimu = muons[0].p4() + muons[1].p4()
 
         #Applying PT cuts
         if(not muons[0].pt > 26 or not muons[1].pt > 26):
-            self.eta_kin_cut.Fill(muons[0].eta)
-            self.eta_kin_cut.Fill(muons[1].eta)
-            self.pt_kin_cut.Fill(muons[0].pt)
-            self.pt_kin_cut.Fill(muons[1].pt)
-            self.dimu_kin_cut.Fill(dimu.M())
             return True
-        dimu = muons[0].p4() + muons[1].p4()
 
         #Applying ETA cuts
         if(not abs(muons[0].eta) < 2.4 or not abs(muons[1].eta) < 2.4):
-            self.eta_kin_cut.Fill(muons[0].eta)
-            self.eta_kin_cut.Fill(muons[1].eta)
-            self.pt_kin_cut.Fill(muons[0].pt)
-            self.pt_kin_cut.Fill(muons[1].pt)
-            self.dimu_kin_cut.Fill(dimu.M())
             return True
-        dimu = muons[0].p4() + muons[1].p4()
 
         #Applying Trigger Selection cuts
         doesPassTrigSelection, trigObjIndex = self.trigObjSelector(trigObj)
         if(not doesPassTrigSelection):
-            self.eta_trig_cut.Fill(muons[0].eta)
-            self.eta_trig_cut.Fill(muons[1].eta)
-            self.pt_trig_cut.Fill(muons[0].pt)
-            self.pt_trig_cut.Fill(muons[1].pt)
-            self.dimu_trig_cut.Fill(dimu.M())
             return True
         #Applying dR Selection to match Trigger Object to the muons tested.
         if(not self.dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[0].eta, muons[0].phi) and not self.dRSelection(trigObj[trigObjIndex].eta, trigObj[trigObjIndex].phi, muons[1].eta, muons[1].phi)):
-            self.eta_trig_cut.Fill(muons[0].eta)
-            self.eta_trig_cut.Fill(muons[1].eta)
-            self.pt_trig_cut.Fill(muons[0].pt)
-            self.pt_trig_cut.Fill(muons[1].pt)
-            self.dimu_trig_cut.Fill(dimu.M())
             return True
         #Applying GenPart cut for MC
         checkGenParents, p4_FSR = self.checkGenParents(muons, genPart)
-        print p4_FSR, checkGenParents
         if(not checkGenParents and not p4_FSR):
-            self.eta_gen_cut.Fill(muons[0].eta)
-            self.eta_gen_cut.Fill(muons[1].eta)
-            self.pt_gen_cut.Fill(muons[0].pt)
-            self.pt_gen_cut.Fill(muons[1].pt)
-            self.dimu_gen_cut.Fill(dimu.M())
             return True
-        #Correcting for FSR
+        dimu = muons[0].p4() + muons[1].p4()
+
+
         if(p4_FSR):
-            self.dimu_beforeFSR.Fill(dimu.M())
+            self.dimu_GP_FSR_B.Fill(dimu.M())
             dimu = dimu + p4_FSR
-            self.dimu_afterFSR.Fill(dimu.M())
-        #Adding to final histogram
-        self.eta_final.Fill(muons[0].eta)
-        self.eta_final.Fill(muons[1].eta)
-        self.pt_final.Fill(muons[0].pt)
-        self.pt_final.Fill(muons[1].pt)
-        self.dimu_final.Fill(dimu.M())
+            self.dimu_GP_FSR_A.Fill(dimu.M())
+            self.dimu_with_GP.Fill(dimu.M())
+        else:
+            self.dimu_no_GP.Fill(dimu.M())
+
+        #Correcting for FSR using NanoAOD Premade Variables
+        p4FSR_ND, dROverEt2_min_candiate = None, 1000
+        for photon in fsrPhotons:
+            if(photon.pt > 2 and (abs(photon.eta) < 1.4 or (abs(photon.eta) > 1.6 and abs(photon.eta) < 2.4))):
+                dR = ((photon.eta-muons[photon.muonIdx].eta)**2 + (photon.phi-muons[photon.muonIdx].phi)**2)**(.5)
+                if(dR < .5):
+                    if(photon.relIso03 < 1.8):
+                        if(photon.dROverEt2 < 0.012):
+                            if(photon.pt/muons[photon.muonIdx].pt < 0.4):
+                                if(photon.dROverEt2 < dROverEt2_min_candiate or dROverEt2_min_candiate == 1000):
+                                    vect = ROOT.TLorentzVector()
+                                    vect.SetPtEtaPhiM(photon.pt, photon.eta, photon.phi, 0)
+                                    p4FSR_ND = vect
+        if(p4FSR_ND):
+            dimu = muons[0].p4() + muons[1].p4()
+            vect = ROOT.TLorentzVector()
+            vect.SetPxPyPzE(p4FSR_ND.Px(), p4FSR_ND.Py(), p4FSR_ND.Pz(), p4FSR_ND.E())
+            self.dimu_ND_FSR_B.Fill(dimu.M())
+            dimu = dimu + vect
+            self.dimu_ND_FSR_A.Fill(dimu.M())
+            self.dimu_with_ND.Fill(dimu.M())
+        else:
+            self.dimu_no_ND.Fill(dimu.M())
+
+
         return True
 
 
