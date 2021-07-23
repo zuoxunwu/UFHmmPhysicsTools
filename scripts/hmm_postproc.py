@@ -56,8 +56,14 @@ if __name__ == "__main__":
         config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config.txt", "r")
         config_file_contents = config_file.read()
         config = json.loads(config_file_contents)
+        # check internet host
+        import socket
+        host = socket.getfqdn()
+        prefix = 'root://cmsxrootd.fnal.gov//'
+        if 'cern.ch' in host:
+          prefix = 'root://xrootd-cms.infn.it//'
         for f in config[options.dataset]["files"]:
-            args.append("root://cmsxrootd.fnal.gov//"+f)
+            args.append(prefix + f)
 
     print(args)
 
