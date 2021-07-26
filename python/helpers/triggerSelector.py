@@ -1,5 +1,5 @@
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Event, Object, Collection
-from PhysicsTools.UFHmmPhysicsTools.python.helpers.objectSelector import MuonSelector, ElectronSelector
+from PhysicsTools.UFHmmPhysicsTools.helpers.objectSelector import MuonSelector, ElectronSelector
 
 
 def _trigSelector(event, year = None, trigger_name = None):
@@ -13,7 +13,7 @@ def _trigSelector(event, year = None, trigger_name = None):
 
     if trigger_name == "SingleMu":
         trig_pt_min = 26
-        if year = 2017: trig_pt_min = 29
+        if year == 2017: trig_pt_min = 29
         muSel = MuonSelector(_year = year, _id_name = "medium", _iso_name = "PFIsoLoose",
                              _pt_corr = "Roch", _min_pt = trig_pt_min, _max_eta = 2.4,
                              _max_d0PV = 0.05, _max_dzPV = 0.1, _min_lepMVA = -1)

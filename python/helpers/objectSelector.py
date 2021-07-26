@@ -48,7 +48,7 @@ class MuonSelector(ObjectSelector):
 
 
 class ElectronSelector(ObjectSelector):
-    def __init__(self, _year = "None", _id_name = "mvaIsoWP90",  _convVeto = True
+    def __init__(self, _year = "None", _id_name = "mvaIsoWP90",  _convVeto = True,
                  _min_pt = 20, _max_eta = 2.5, 
                  _max_d0PV = 0.05, _max_dzPV = 0.1, _min_lepMVA = -1):
 
@@ -72,7 +72,7 @@ class ElectronSelector(ObjectSelector):
     def evalEle(self, ele):
         # ID and Iso
         if self.iso_name == "mvaIsoWP90" and not ele.mvaFall17V1Iso_WP90: return False
-        if self._convVeto = True and not ele.convVeto: return False
+        if self._convVeto and not ele.convVeto: return False
         # pt
         if ele.pt < self.min_pt: return False
         # others
