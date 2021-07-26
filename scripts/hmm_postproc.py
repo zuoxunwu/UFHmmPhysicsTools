@@ -31,7 +31,7 @@ if __name__ == "__main__":
     parser.add_option("--full", dest="friend", action="store_false", default=False,
                       help="Produce full trees in output (this is the current default)")
     parser.add_option("--noout", dest="noOut", action="store_true",
-                      default=True, help="Do not produce output, just run modules")
+                      default=False, help="Do not produce output, just run modules")
     parser.add_option("-P", "--prefetch", dest="prefetch", action="store_true", default=False,
                       help="Prefetch input files locally instead of accessing them via xrootd")
     parser.add_option("--long-term-cache", dest="longTermCache", action="store_true", default=False,
