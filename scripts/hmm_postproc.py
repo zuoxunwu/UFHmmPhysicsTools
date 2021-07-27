@@ -25,7 +25,7 @@ if __name__ == "__main__":
     parser.add_option("--bi", "--branch-selection-input", dest="branchsel_in",
                       type="string", default="PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt", help="Branch selection input")
     parser.add_option("--bo", "--branch-selection-output", dest="branchsel_out",
-                      type="string", default=None, help="Branch selection output")
+                      type="string", default="PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_output.txt", help="Branch selection output")
     parser.add_option("--friend", dest="friend", action="store_true", default=False,
                       help="Produce friend trees in output (current default is to produce full trees)")
     parser.add_option("--full", dest="friend", action="store_false", default=False,
