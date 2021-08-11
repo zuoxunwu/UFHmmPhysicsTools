@@ -31,6 +31,15 @@ Finally, we can run scram to compile all modules.
 ```
 scram b -j8
 ```
+
+#### Set up Rochester Correction
+Go to directory `PhysicsTools/UFHmmPhysicsTools/src` and run script `makeSharedObject.sh`
+```
+. ./makeSharedObject.sh
+```
+A shared object `RoccoR_cc.so` will be made in this directory, which is loaded in `PhysicsTools/UFHmmPhysicsTools/python/helpers/roccorHelper.py` for Rochester Correction.  
+
+
 ## Scripts
 The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is the `keep_and_drop_input.txt` file which controls which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
 
