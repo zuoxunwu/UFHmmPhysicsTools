@@ -1,0 +1,15 @@
+#This is a comment
+#Follow python RegEx
+
+dropmatch ^[A-Z].*  # All objects start with an upper case letter
+drop btagWeight*
+drop fixedGrid*
+drop genTtbarId
+
+# keep event info
+keep run
+keep luminosityBlock
+keep event
+
+# If a custom branch starts with an upper case letter (dropped by the command above),
+# it should be explicitly kept here

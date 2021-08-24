@@ -1,7 +1,17 @@
 #This is a comment
+#Follow python RegEx
+
 drop *
 keep Muon*
 keep TrigObj*
 keep GenPart*
+keep FsrPhoton*
+
 #keep Electron*
 #keep Jet*
+
+keep run
+keep luminosityBlock
+keep event
+keep genWeight
+

@@ -25,13 +25,13 @@ if __name__ == "__main__":
     parser.add_option("--bi", "--branch-selection-input", dest="branchsel_in",
                       type="string", default="PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt", help="Branch selection input")
     parser.add_option("--bo", "--branch-selection-output", dest="branchsel_out",
-                      type="string", default=None, help="Branch selection output")
+                      type="string", default="PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_output.txt", help="Branch selection output")
     parser.add_option("--friend", dest="friend", action="store_true", default=False,
                       help="Produce friend trees in output (current default is to produce full trees)")
     parser.add_option("--full", dest="friend", action="store_false", default=False,
                       help="Produce full trees in output (this is the current default)")
     parser.add_option("--noout", dest="noOut", action="store_true",
-                      default=True, help="Do not produce output, just run modules")
+                      default=False, help="Do not produce output, just run modules")
     parser.add_option("-P", "--prefetch", dest="prefetch", action="store_true", default=False,
                       help="Prefetch input files locally instead of accessing them via xrootd")
     parser.add_option("--long-term-cache", dest="longTermCache", action="store_true", default=False,
@@ -56,8 +56,14 @@ if __name__ == "__main__":
         config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config.txt", "r")
         config_file_contents = config_file.read()
         config = json.loads(config_file_contents)
+        # check internet host
+        import socket
+        host = socket.getfqdn()
+        prefix = 'root://cmsxrootd.fnal.gov//'
+        if 'cern.ch' in host:
+          prefix = 'root://xrootd-cms.infn.it//'
         for f in config[options.dataset]["files"]:
-            args.append("root://cmsxrootd.fnal.gov//"+f)
+            args.append(prefix + f)
 
     print(args)
 
