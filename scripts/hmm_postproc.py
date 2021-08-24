@@ -51,8 +51,6 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
     if(options.dataset):
-        if(len(args)==0):
-            args.append("True")
         config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config.txt", "r")
         config_file_contents = config_file.read()
         config = json.loads(config_file_contents)
@@ -63,7 +61,10 @@ if __name__ == "__main__":
         if 'cern.ch' in host:
           prefix = 'root://xrootd-cms.infn.it//'
         for f in config[options.dataset]["files"]:
+            args.append(config[options.dataset]["outputDir"])
             args.append(prefix + f)
+        if(len(args)==0):
+            args.append("True")
 
     print(args)
 
@@ -77,6 +78,12 @@ if __name__ == "__main__":
         sys.exit(1)
     outdir = args[0]
     args = args[1:]
+
+    if(options.histFileName):
+        if(not options.histFileName.split("/")[0] is outdir):
+            options.histFileName = outdir + "/" + options.histFileName
+        if(not options.histFileName.split(".")[len(options.histFileName.split("."))-1] is "root"):
+            options.histFileName = options.histFileName + ".root"
 
     modules = []
     for mod, names in options.imports:
