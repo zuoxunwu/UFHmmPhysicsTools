@@ -1,0 +1,3 @@
+#Ignore scram generated files anywhere in directory
+*.pyc
+__init__.*
