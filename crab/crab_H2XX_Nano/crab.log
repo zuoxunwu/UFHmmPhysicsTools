@@ -1,0 +1,156 @@
+DEBUG 2021-08-25 18:03:32.453 UTC: 	 CRAB Client version: v3.210610
+DEBUG 2021-08-25 18:03:32.453 UTC: 	 Running on: Linux lxplus753.cern.ch 3.10.0-1160.36.2.el7.x86_64 #1 SMP Wed Jul 21 11:57:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux - CentOS Linux 7 (Core)
+DEBUG 2021-08-25 18:03:32.453 UTC: 	 Executing command: 'submit'
+DEBUG 2021-08-25 18:03:32.453 UTC: 	 Found CRAB cache file /afs/cern.ch/user/j/jrotter/.crab3
+INFO 2021-08-25 18:03:32.454 UTC: 	 Will use CRAB configuration file crab_cfg.py
+DEBUG 2021-08-25 18:03:32.455 UTC: 	 Loading CRAB configuration file.
+DEBUG 2021-08-25 18:03:32.455 UTC: 	 Overriden parameter JobType.scriptArgs with ['dataset=ggH', 'module=analyzers.hmmAnalyzer']
+DEBUG 2021-08-25 18:03:32.455 UTC: 	 Overriden parameter JobType.outputFiles with ['ggH/hist_out.root','ggH/*']
+DEBUG 2021-08-25 18:03:32.456 UTC: 	 Will use CRAB Analysis plugin (i.e. will run an analysis job type).
+DEBUG 2021-08-25 18:03:32.658 UTC: 	 Checking credentials
+DEBUG 2021-08-25 18:03:32.659 UTC: 	 Found proxy file /tmp/x509up_u134315
+DEBUG 2021-08-25 18:03:32.659 UTC: 	 Getting proxy life time left
+DEBUG 2021-08-25 18:03:33.364 UTC: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u134315 -timeleft
+ output : 34315
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:33.970 UTC: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u134315 -actimeleft
+ output : 34315
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:33.970 UTC: 	 Proxy valid for 09:31:55 hours
+DEBUG 2021-08-25 18:03:34.578 UTC: 	 Executing : 
+ command : env X509_USER_PROXY=/tmp/x509up_u134315 voms-proxy-info -fqan
+ output : /cms/Role=NULL/Capability=NULL
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:34.652 UTC: 	 Registering user credentials for server /DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+DEBUG 2021-08-25 18:03:35.263 UTC: 	 Executing : 
+ command : voms-proxy-info -file /tmp/x509up_u134315 -identity
+ output : /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:35.270 UTC: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2021-08-25 18:03:35.270 UTC: 	 using 832725e9460e3bcf5da142e35fa2a2226d42c4c9 as credential login name
+DEBUG 2021-08-25 18:03:35.574 UTC: 	 Executing : 
+ command : myproxy-info -l 832725e9460e3bcf5da142e35fa2a2226d42c4c9 -s myproxy.cern.ch
+ output : username: 832725e9460e3bcf5da142e35fa2a2226d42c4c9
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms0105.cern.ch|/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms0105.cern.ch|/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  timeleft: 0:00:00
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:35.575 UTC: 	 Myproxy is valid: 0
+DEBUG 2021-08-25 18:03:35.679 UTC: 	 Executing : 
+ command : openssl x509 -noout -in ~/.globus/usercert.pem -dates
+ output : notBefore=Jul  6 15:43:15 2021 GMT
+notAfter=Aug 10 15:43:15 2022 GMT
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:35.686 UTC: 	 Delegating a myproxy for 720:00 hours
+DEBUG 2021-08-25 18:03:35.687 UTC: 	 using 832725e9460e3bcf5da142e35fa2a2226d42c4c9 as credential login name
+DEBUG 2021-08-25 18:03:41.602 UTC: 	 Executing : 
+ command : export GT_PROXY_MODE=rfc ; myproxy-init -d -n -s myproxy.cern.ch -x -R '/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch' -x -Z '/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch' -l '832725e9460e3bcf5da142e35fa2a2226d42c4c9' -t 168:00 -c 720:00
+ output : Your identity: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+Creating proxy ....................................................................................................................................................................................................................... Done
+Proxy Verify OK
+Your proxy is valid until: Fri Sep 24 20:03:41 2021
+A proxy valid for 720 hours (30.0 days) for user 832725e9460e3bcf5da142e35fa2a2226d42c4c9 now exists on myproxy.cern.ch.
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:41.602 UTC: 	 using 832725e9460e3bcf5da142e35fa2a2226d42c4c9 as credential login name
+DEBUG 2021-08-25 18:03:42.107 UTC: 	 Executing : 
+ command : myproxy-info -l 832725e9460e3bcf5da142e35fa2a2226d42c4c9 -s myproxy.cern.ch
+ output : username: 832725e9460e3bcf5da142e35fa2a2226d42c4c9
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  timeleft: 719:59:59  (30.0 days)
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:42.107 UTC: 	 My-proxy delegated.
+DEBUG 2021-08-25 18:03:42.107 UTC: 	 Retrieving username ...
+DEBUG 2021-08-25 18:03:42.108 UTC: 	 Retrieving username from CRIC...
+DEBUG 2021-08-25 18:03:43.674 UTC: 	 username is jrotter
+DEBUG 2021-08-25 18:03:43.679 UTC: 	 Getting myproxy life time left for myproxy.cern.ch
+DEBUG 2021-08-25 18:03:43.679 UTC: 	 using jrotter_CRAB as credential login name
+DEBUG 2021-08-25 18:03:43.983 UTC: 	 Executing : 
+ command : myproxy-info -l jrotter_CRAB -s myproxy.cern.ch
+ output : username: jrotter_CRAB
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=vocms0105.cern.ch|/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=vocms0105.cern.ch|/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  timeleft: 0:00:00
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:43.983 UTC: 	 Myproxy is valid: 0
+DEBUG 2021-08-25 18:03:44.087 UTC: 	 Executing : 
+ command : openssl x509 -noout -in ~/.globus/usercert.pem -dates
+ output : notBefore=Jul  6 15:43:15 2021 GMT
+notAfter=Aug 10 15:43:15 2022 GMT
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:44.088 UTC: 	 Delegating a myproxy for 720:00 hours
+DEBUG 2021-08-25 18:03:44.088 UTC: 	 using jrotter_CRAB as credential login name
+DEBUG 2021-08-25 18:03:48.200 UTC: 	 Executing : 
+ command : export GT_PROXY_MODE=rfc ; myproxy-init -d -n -s myproxy.cern.ch -x -R '/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch' -x -Z '/DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch' -l 'jrotter_CRAB' -t 168:00 -c 720:00
+ output : Your identity: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+Creating proxy ............................. Done
+Proxy Verify OK
+Your proxy is valid until: Fri Sep 24 20:03:47 2021
+A proxy valid for 720 hours (30.0 days) for user jrotter_CRAB now exists on myproxy.cern.ch.
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:48.200 UTC: 	 using jrotter_CRAB as credential login name
+DEBUG 2021-08-25 18:03:48.505 UTC: 	 Executing : 
+ command : myproxy-info -l jrotter_CRAB -s myproxy.cern.ch
+ output : username: jrotter_CRAB
+owner: /DC=ch/DC=cern/OU=Organic Units/OU=Users/CN=jrotter/CN=847458/CN=John Rotter
+  renewal policy: /DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  trusted retrieval policy: /DC=ch/DC=cern/OU=computers/CN=crab-(preprod|prod|dev)-tw(02|01).cern.ch|/DC=ch/DC=cern/OU=computers/CN=(ddi|ddidk|mytw).cern.ch|/DC=ch/DC=cern/OU=computers/CN=stefanov(m|m2).cern.ch
+  timeleft: 719:59:59  (30.0 days)
+
+ error: 
+ retcode : 0
+DEBUG 2021-08-25 18:03:48.505 UTC: 	 My-proxy delegated.
+DEBUG 2021-08-25 18:03:48.505 UTC: 	 Result of myproxy credential check:
+  Credential exists on myproxy: username: 832725e9460e3bcf5da142e35fa2a2226d42c4c9  - validity: 29 days, 23:59:59
+  Credential exists on myproxy: username: jrotter_CRAB  - validity: 29 days, 23:59:59
+DEBUG 2021-08-25 18:03:48.505 UTC: 	 Command use: submit
+DEBUG 2021-08-25 18:03:48.506 UTC: 	 Options use: ['crab_cfg.py', "JobType.scriptArgs=['dataset=ggH', 'module=analyzers.hmmAnalyzer']", "JobType.outputFiles=['ggH/hist_out.root','ggH/*']"]
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 CRABClient version: v3.210610
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 Instance is prod
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 Server base url is cmsweb.cern.ch
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 Command api workflow
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 Started submission
+DEBUG 2021-08-25 18:03:48.589 UTC: 	 Working on /afs/cern.ch/user/j/jrotter/public/H2XXAnalysis/CMSSW_10_6_19_patch2/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_H2XX_Nano
+ERROR 2021-08-25 18:03:48.761 UTC: 	 Invalid CRAB configuration: Analysis job type requires an input dataset or a set of user input files to run on.
+Suggestion: To specify an input dataset use the parameter Data.inputDataset. To specify a set of user input files use the parameter Data.userInputFiles.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
+ERROR 2021-08-25 18:03:48.761 UTC: 	 Caught ClientException exception
+Traceback (most recent call last):
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/bin/crab", line 151, in <module>
+    client()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/bin/crab", line 138, in __call__
+    self.cmd()
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/lib/CRABClient/Commands/submit.py", line 101, in __call__
+    plugjobtype = crab_job_types[self.configreq['jobtype'].upper()](*pluginParams)
+  File "/cvmfs/cms.cern.ch/share/cms/crab-prod/v3.210610.01/lib/CRABClient/JobType/BasicJobType.py", line 36, in __init__
+    raise ConfigurationException(msg)
+ConfigurationException: Invalid CRAB configuration: Analysis job type requires an input dataset or a set of user input files to run on.
+Suggestion: To specify an input dataset use the parameter Data.inputDataset. To specify a set of user input files use the parameter Data.userInputFiles.
+The documentation about the CRAB configuration file can be found in https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile
