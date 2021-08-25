@@ -14,13 +14,6 @@ cmsenv
 voms-proxy-init --voms cms
 ```
 
-Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
-```
-cmsenv
-voms-proxy-init --voms cms
-```
-
-
 Additionally, these tools depend on the NanoAOD tools. We can get these analysis tools and the NanoAOD tools and put them into the `src` directories of the CMSSW Environment.
 ```
 git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
@@ -31,8 +24,16 @@ Finally, we can run scram to compile all modules.
 ```
 scram b -j8
 ```
+
+
+Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
+```
+cmsenv
+voms-proxy-init --voms cms
+```
+
 ## Scripts
-The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is the `keep_and_drop_input.txt` file which controls which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
+The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is `keep_and_drop_output.txt` and `keep_and_drop_input.txt` files which control which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
 
 Additionally, in the `scripts` directory there is a text file that has dataset information written in JSON format in `dataset_config.txt` this is where you can add dataset parameters such as files, MC flags, or other options. 
 
@@ -71,6 +72,17 @@ python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
         --hfile <output-hist-file> \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer>
 ```
+
+## Helpers
+Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers. These files handle object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer. 
+
+Note that after each helper class has been made, the repo must be recompiled so they can be imported into your analyzer. 
+```
+scram b -j8
+```
+
+##Producers
+
 
 ## Plotting
 After running the analyzer and retrieving the output histograms, `plotter.py` can be used to stack, stylize, and export the plots from multiple root files to PDF format.
