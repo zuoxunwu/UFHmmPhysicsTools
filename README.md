@@ -1,7 +1,7 @@
 # UFHmmPhysicsTools
 UF Physics Tools for Hmm Analysis.
 
-These tools are organized into directories of `analyzers`, `scripts`, and `plotters`.
+These tools are organized into directories of `analyzers`, `producers`, `helpers`, `scripts`, and `plotters`.
 
 
 ## Set Up
@@ -44,6 +44,7 @@ The structure of an analyzer module comes in two main parts:
 
 * `beginJob()`
     * Initialize histograms and add them to `self`
+    * `self.histname = ROOT.TH1F('Plot Name', 'Plot Title', nbins, low, high)`
 
 * `analyze()`
     * Initialize collections, perform selections, fill histograms
@@ -73,16 +74,26 @@ python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer>
 ```
 
-## Helpers
-Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers. These files handle object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer. 
+## Producers
+Producers are similar to analyzers in structure but are used to produce skimmed root files to be used in future analyzers. 
 
-Note that after each helper class has been made, the repo must be recompiled so they can be imported into your analyzer. 
+The structure of a producer module comes in two main parts:
+* `beginJob()`
+    * Initialize branches and add them to `self`
+    * `self.out.branch('branchName', 'type')`
+
+* `analyze()`
+    * Initialize collections, perform selections, fill branches
+
+The producers are run the same way as analyzers but an output file will created with the filename `*Skim.root`.
+
+## Helpers
+Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers or producers. These files handle object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer or producer. 
+
+Note that after each helper class has been made, the repo must be recompiled so they can be imported into your other modules using, 
 ```
 scram b -j8
 ```
-
-##Producers
-
 
 ## Plotting
 After running the analyzer and retrieving the output histograms, `plotter.py` can be used to stack, stylize, and export the plots from multiple root files to PDF format.
