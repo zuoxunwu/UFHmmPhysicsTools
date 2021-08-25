@@ -131,6 +131,6 @@ All together an example command would be:
 To submit a crab job to run a specific module on a dataset from the `src` directory you can run,
 ```
 crab submit -c crab/crab_cfg.py JobType.scriptArgs=["dataset=<dataset>","module=<type>.<module>"]
-`
+```
 In this command, the `<dataset>` must be defined in `scripts/dataset_config.txt`. Additionally, `<type>` can be either a `producer` or `analyzer`, and `<module>` is the name of your python file without the `.py` extension. 
 
