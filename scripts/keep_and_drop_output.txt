@@ -4,6 +4,7 @@
 dropmatch ^[A-Z].*  # All objects start with an upper case letter
 drop btagWeight*
 drop fixedGrid*
+drop boostedTau*
 drop genTtbarId
 
 # keep event info

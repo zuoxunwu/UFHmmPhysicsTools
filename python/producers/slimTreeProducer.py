@@ -7,6 +7,7 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.output import OutputTree
 
 from PhysicsTools.UFHmmPhysicsTools.helpers.eventSelector import EventSelector
 from PhysicsTools.UFHmmPhysicsTools.helpers.objectSelector import MuonSelector, ElectronSelector
+from PhysicsTools.UFHmmPhysicsTools.helpers.roccorHelper import RochCorr
 
 class slimTreeProducer(Module):
     def __init__(self):
@@ -48,6 +49,8 @@ class slimTreeProducer(Module):
                              _pt_corr = "Roch", _min_pt = 20, _max_eta = 2.4,
                              _max_d0PV = 0.05, _max_dzPV = 0.1, _min_lepMVA = -1)
 
+        muRC = RochCorr("2018UL")
+
         mu_charge  = []
         mu_eta     = []
         mu_phi     = []
@@ -61,9 +64,11 @@ class slimTreeProducer(Module):
             mu_eta   .append(mu.eta)
             mu_phi   .append(mu.phi)
             mu_d0    .append(mu.dxybs * 1e4)
-            mu_pt_Roch.append(mu.pt)            # to be updated with Roch -- XWZ 2021.07.26
-            if mu.genPartFlav == 1:  mu_pt_gen.append(genPart[mu.genPartIdx].pt)  #check matching criteria in nanoAOD -- XWZ 2021.07.27
-            else:                    mu_pt_gen.append(0)
+            pt_gen = 0
+            if mu.genPartFlav == 1:  pt_gen = genPart[mu.genPartIdx].pt  #check matching criteria in nanoAOD -- XWZ 2021.07.27
+            mu_pt_gen.append(pt_gen)
+            mu_pt_Roch.append( muRC.pt_Roch(mu.charge, mu.pt, mu.eta, mu.phi, pt_gen, "MC") )
+
 
         self.out.fillBranch('muon_charge', mu_charge)
         self.out.fillBranch('muon_eta', mu_eta)

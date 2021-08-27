@@ -5,6 +5,8 @@ These tools are organized into directories of `analyzers`, `producers`, `helpers
 
 
 ## Set Up
+
+#### CMSSW
 These tools are made to be used in a CMSSW Environment. On LXPLUS the CMSSW Environment can be retrieved using `cmsrel`.
 ```
 cmsrel CMSSW_10_6_19_patch2
@@ -14,6 +16,7 @@ cmsenv
 voms-proxy-init --voms cms
 ```
 
+#### Git packages
 Additionally, these tools depend on the NanoAOD tools. We can get these analysis tools and the NanoAOD tools and put them into the `src` directories of the CMSSW Environment.
 ```
 git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
@@ -25,7 +28,14 @@ Finally, we can run scram to compile all modules.
 scram b -j8
 ```
 
+#### Set up Rochester Correction library
+Go to directory `PhysicsTools/UFHmmPhysicsTools/src` and run script `makeSharedObject.sh`
+```
+. ./makeSharedObject.sh
+```
+A shared object `RoccoR_cc.so` will be made in this directory, which is loaded in `PhysicsTools/UFHmmPhysicsTools/python/helpers/roccorHelper.py` for Rochester Correction.  
 
+#### Running environment
 Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
 ```
 cmsenv
