@@ -1,10 +1,12 @@
 # UFHmmPhysicsTools
 UF Physics Tools for Hmm Analysis.
 
-These tools are organized into directories of `analyzers`, `scripts`, and `plotters`.
+These tools are organized into directories of `analyzers`, `producers`, `helpers`, `scripts`, and `plotters`.
 
 
 ## Set Up
+
+#### CMSSW
 These tools are made to be used in a CMSSW Environment. On LXPLUS the CMSSW Environment can be retrieved using `cmsrel`.
 ```
 cmsrel CMSSW_10_6_19_patch2
@@ -14,13 +16,7 @@ cmsenv
 voms-proxy-init --voms cms
 ```
 
-Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
-```
-cmsenv
-voms-proxy-init --voms cms
-```
-
-
+#### Git packages
 Additionally, these tools depend on the NanoAOD tools. We can get these analysis tools and the NanoAOD tools and put them into the `src` directories of the CMSSW Environment.
 ```
 git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
@@ -32,16 +28,22 @@ Finally, we can run scram to compile all modules.
 scram b -j8
 ```
 
-#### Set up Rochester Correction
+#### Set up Rochester Correction library
 Go to directory `PhysicsTools/UFHmmPhysicsTools/src` and run script `makeSharedObject.sh`
 ```
 . ./makeSharedObject.sh
 ```
 A shared object `RoccoR_cc.so` will be made in this directory, which is loaded in `PhysicsTools/UFHmmPhysicsTools/python/helpers/roccorHelper.py` for Rochester Correction.  
 
+#### Running environment
+Each time you would login on LXPLUS you will need to change to the `CMSSW_10_6_19_patch2/src` directory and run,
+```
+cmsenv
+voms-proxy-init --voms cms
+```
 
 ## Scripts
-The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is the `keep_and_drop_input.txt` file which controls which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
+The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is `keep_and_drop_output.txt` and `keep_and_drop_input.txt` files which control which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
 
 Additionally, in the `scripts` directory there is a text file that has dataset information written in JSON format in `dataset_config.txt` this is where you can add dataset parameters such as files, MC flags, or other options. 
 
@@ -52,6 +54,7 @@ The structure of an analyzer module comes in two main parts:
 
 * `beginJob()`
     * Initialize histograms and add them to `self`
+    * `self.histname = ROOT.TH1F('Plot Name', 'Plot Title', nbins, low, high)`
 
 * `analyze()`
     * Initialize collections, perform selections, fill histograms
@@ -79,6 +82,27 @@ python PhysicsTools/UFHmmPhysicsTools/scripts/hmm_postproc.py \
         --hdir <output-hist-directory> \
         --hfile <output-hist-file> \
         -I PhysicsTools.UFHmmPhysicsTools.analyzers.<your-analyzer> <your-analyzer>
+```
+
+## Producers
+Producers are similar to analyzers in structure but are used to produce skimmed root files to be used in future analyzers. 
+
+The structure of a producer module comes in two main parts:
+* `beginJob()`
+    * Initialize branches and add them to `self`
+    * `self.out.branch('branchName', 'type')`
+
+* `analyze()`
+    * Initialize collections, perform selections, fill branches
+
+The producers are run the same way as analyzers but an output file will created with the filename `*Skim.root`.
+
+## Helpers
+Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers or producers. These files handle object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer or producer. 
+
+Note that after each helper class has been made, the repo must be recompiled so they can be imported into your other modules using, 
+```
+scram b -j8
 ```
 
 ## Plotting
@@ -112,3 +136,13 @@ All together an example command would be:
         /pdfs /plots hist_out_DYJets.root hist_out_ZH_HToMuMu.root
 ```
 
+
+## Crab Submission
+To submit a crab job to run a specific module on a dataset from the `src` directory you can run,
+```
+crab submit -c PhysicsTools/UFHmmPhysicsTools/crab/crab_cfg.py JobType.scriptArgs="['dataset=<dataset>','module=<type>.<module>']" JobType.outputFiles="['<outputFile>']"
+
+```
+In this command, the `<dataset>` must be defined in `scripts/dataset_config.txt`. Additionally, `<type>` can be either a `producer` or `analyzer`, and `<module>` is the name of your python file without the `.py` extension. 
+
+For Example a module named `hmmAnalyzer.py` in the `analyzers` directory would have `module=analyzers.hmmAnalyzer`
