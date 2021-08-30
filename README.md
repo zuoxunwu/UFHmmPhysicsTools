@@ -3,6 +3,7 @@ UF Physics Tools for Hmm Analysis.
 
 These tools are organized into directories of `analyzers`, `producers`, `helpers`, `scripts`, and `plotters`.
 
+Additionally, supporting scripts for `CRAB` subbmission are stored in the `crab` directory. 
 
 ## Set Up
 
@@ -45,7 +46,7 @@ voms-proxy-init --voms cms
 ## Scripts
 The only script in the framework is `hmm_postproc.py` which intializes the relavent branches, creates the ROOT output files, and runs the event loop. Accompanying the `hmm_postproc.py` is `keep_and_drop_output.txt` and `keep_and_drop_input.txt` files which control which branches are kept or dropped. If your analyzer uses any specific branches such as `Electron`, `Muon`, `GenPart`, then it needs to be added to `keep_and_drop_input.txt`. 
 
-Additionally, in the `scripts` directory there is a text file that has dataset information written in JSON format in `dataset_config.txt` this is where you can add dataset parameters such as files, MC flags, or other options. 
+Additionally, in the `scripts` directory there is a text file that has dataset information written in JSON format in `dataset_config.txt` this is where you can add dataset parameters such as files, MC flags, or other options. (SOON TO BE CHANGED TO USE NEW `samples.py` HELPER CLASS)
 
 ## Analyzers
 Analyzers are stored in `python/analyzers` directory and are used as imported modules by `hmm_postproc.py` to analyze events and build histograms. 
@@ -98,12 +99,15 @@ The structure of a producer module comes in two main parts:
 The producers are run the same way as analyzers but an output file will created with the filename `*Skim.root`.
 
 ## Helpers
-Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers or producers. These files handle object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer or producer. 
+Helper classes are stored in `python/helpers` directory and are used as imported classes for analyzers or producers. These files handle sample data, object selections, trigger selections, and event selections. They are meant to act as an organized scaffolding used in your analyzer or producer. 
 
 Note that after each helper class has been made, the repo must be recompiled so they can be imported into your other modules using, 
 ```
 scram b -j8
 ```
+
+One noteable helper class that stands apart from the others is `samples.py`. In this class one can define the parameters of their dataset for `CRAB` submission, such as `name`, `DAS`, `module`, etc.
+
 
 ## Plotting
 After running the analyzer and retrieving the output histograms, `plotter.py` can be used to stack, stylize, and export the plots from multiple root files to PDF format.
@@ -138,11 +142,11 @@ All together an example command would be:
 
 
 ## Crab Submission
+Before you can submit your job using this framework, you must edit `crab/crab_cfg.py` with the storage site and path that you have permissions to write to. 
+
 To submit a crab job to run a specific module on a dataset from the `src` directory you can run,
 ```
-crab submit -c PhysicsTools/UFHmmPhysicsTools/crab/crab_cfg.py JobType.scriptArgs="['dataset=<dataset>','module=<type>.<module>']" JobType.outputFiles="['<outputFile>']"
-
+python PhysicsTools/UFHmmPhysicsTools/crab/crab_submit.py <sample_name>
 ```
-In this command, the `<dataset>` must be defined in `scripts/dataset_config.txt`. Additionally, `<type>` can be either a `producer` or `analyzer`, and `<module>` is the name of your python file without the `.py` extension. 
+In this command, the `<sample_name>` must be defined in `samples.py`.
 
-For Example a module named `hmmAnalyzer.py` in the `analyzers` directory would have `module=analyzers.hmmAnalyzer`

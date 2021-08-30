@@ -10,7 +10,7 @@ config.General.transferLogs = True
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
 #config.User.voGroup = 'dcms'
-config.JobType.psetName = 'PhysicsTools/UFHmmPhysicsTools/crab/pset.py'
+config.JobType.psetName = 'PhysicsTools/UFHmmPhysicsTools/crab/PSet.py'
 config.JobType.scriptExe = 'PhysicsTools/UFHmmPhysicsTools/crab/crab_script.sh'
 # hadd nano will not be needed once nano tools are in cmssw
 config.JobType.inputFiles = ['PhysicsTools/UFHmmPhysicsTools/crab/crab_script.py']
@@ -23,9 +23,10 @@ config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 2
 config.Data.totalUnits = 10
-config.Data.outLFNDirBase = '/store/user/%s/H2XXNanoPost' % ("jrotter")
+#Edit below with a path you have write permissions to on the storage site!
+config.Data.outLFNDirBase = '/store/user/%s/H2XXNanoPost' % ("USER")
 config.Data.publication = False
 config.Data.outputDatasetTag = 'H2XXPost'
 config.section_("Site")
-config.Site.storageSite = "T2_CH_CERN"
+config.Site.storageSite = "T3_US_FNALLPC"
 #Need to find a stoarge site that you have permission to write to!
