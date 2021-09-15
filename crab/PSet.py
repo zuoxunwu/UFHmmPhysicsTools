@@ -4,7 +4,7 @@ process = cms.Process('NANO')
 
 process.source = cms.Source(
     "PoolSource",
-    fileNames=cms.untracked.vstring(),
+    fileNames=cms.untracked.vstring("")
 )
 
 process.output = cms.OutputModule("PoolOutputModule",

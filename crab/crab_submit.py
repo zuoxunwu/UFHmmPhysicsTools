@@ -16,12 +16,11 @@ if __name__ == "__main__":
         DAS_dataset = sample.DAS
         module = sample.module;
         outputFiles = sample.outputFiles;
-        command = "crab submit PhysicsTools/UFHmmPhysicsTools/crab/crab_cfg.py "
+        command = "crab submit -c PhysicsTools/UFHmmPhysicsTools/crab/crab_cfg.py "
         command = command + "General.requestName=\""+name+"_Nano" + str(int(random.random()*1000)) + "\" "
         command = command + "Data.inputDataset=\"" + DAS_dataset + "\" ";
         command = command + "JobType.scriptArgs=\"['dataset=" + name + "', 'module=" + module + "']\" "
-        command = command + "JobType.outputFiles=\"['" + outputFiles + "']\""
+        if outputFiles: command = command + "JobType.outputFiles=\"['" + outputFiles + "']\""
+        print command
         output = os.system(command)
-        print output
 
-   

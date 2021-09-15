@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
-from PhysicsTools.UFHmmPhysicsTools.helpers.crabHelper import inputFiles
+#from PhysicsTools.UFHmmPhysicsTools.helpers.crabHelper import inputFiles, runsAndLumis
+from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles, runsAndLumis
 from importlib import import_module
 import os
 import sys
@@ -44,7 +45,11 @@ if __name__ == "__main__":
     p = PostProcessor(outputDir, inputFiles(),
                       cut=cut,
                       modules=modules,
+                      provenance=True,
+                      fwkJobReport=True, # This option is essential for the NanoAOD Tool to make a FrameworkJobReport.xml
                       histFileName=histFileName,
                       histDirName=histDirName,
-                      noOut=noOut)
+#                      noOut=noOut,
+                      jsonInput=runsAndLumis() # Will need json for lumi when running on data. Json should be given in PSet.py. If no json is found it returns None, which is the default value of this arg.
+                      )
     p.run()
