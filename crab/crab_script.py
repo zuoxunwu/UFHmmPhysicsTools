@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
-#from PhysicsTools.UFHmmPhysicsTools.helpers.crabHelper import inputFiles, runsAndLumis
 from PhysicsTools.NanoAODTools.postprocessing.framework.crabhelper import inputFiles, runsAndLumis
 from importlib import import_module
 import os
@@ -10,45 +9,43 @@ import json
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 if __name__ == "__main__":
-    from optparse import OptionParser
+    import argparse
     print sys.argv
 
-    jobNumber = sys.argv[1]
-    dataset = sys.argv[2]
-    module_names = [sys.argv[3]]
-    if(len(sys.argv[3].split("=")) > 1):
-        module_names = [sys.argv[3].split("=")[1]]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("jobID", help = "dummy arg to take jobID. Not used in this script.")
+    parser.add_argument("-m", "--modules", nargs='*', dest="modules", default  = [],
+                 help = "modules to run")
+    parser.add_argument("-o", "--outfile", dest="outfile", default  = None,
+                 help = "histFileName")
 
-    print jobNumber, dataset, module_names
-
-    outputDir = "."
-    cut = "0==0"
-    histFileName = "hist_out.root"
-    histDirName = "plots"
-    noOut = True
+    args = parser.parse_args()
+    if not args.modules:
+        print 'No module to run. Exiting.'
+        sys.exit()    
 
     modules = []
-    for names in module_names:
-        mod = "PhysicsTools.UFHmmPhysicsTools." + names
+    for names in args.modules:
+        mod = "PhysicsTools.UFHmmPhysicsTools." + names.rsplit('.', 1)[0]
+        name = names.rsplit('.', 1)[1]
         import_module(mod)
         obj = sys.modules[mod]
-        name = names.split(".")[1]
-        mods = dir(obj)
+        mods = dir(obj)        
         if name in mods:
             print("Loading %s from %s " % (name, mod))
-            if type(getattr(obj, name)) == list:
-                for mod in getattr(obj, name):
-                    modules.append(mod())
+            if type(getattr(obj, name)) == list: # Not sure when it shall be a list. To ask John - XWZ Sep 15 2021
+                for m in getattr(obj, name):
+                    modules.append(m())
             else:
                     modules.append(getattr(obj, name)())
 
-    p = PostProcessor(outputDir, inputFiles(),
-                      cut=cut,
+    p = PostProcessor(".", inputFiles(),
+                      cut="0==0",
                       modules=modules,
                       provenance=True,
                       fwkJobReport=True, # This option is essential for the NanoAOD Tool to make a FrameworkJobReport.xml
-                      histFileName=histFileName,
-                      histDirName=histDirName,
+                      histFileName=args.outfile,
+                      histDirName='plots',
 #                      noOut=noOut,
                       jsonInput=runsAndLumis() # Will need json for lumi when running on data. Json should be given in PSet.py. If no json is found it returns None, which is the default value of this arg.
                       )
