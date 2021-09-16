@@ -51,7 +51,10 @@ print("Production using code version {0} starting" .format(prod_version))
 
 homedir = os.environ['HOME']
 username = homedir.split('/')[-1]
-output_dir = '/store/user/{0}/H2XXNanoPost/{1}/{2}'.format(username, args.year, prod_version) 
+# Try to avoid having decimal point '.' in the LFN directory - XWZ Sep 16 2021
+# Decimal point '.' can only appear in the first-tier or fifth tier subdictories under /user
+# CRAB recognizes regular expression /store/(temp/)*(user|group)/(([a-zA-Z0-9\.]+)|([a-zA-Z0-9\-_]+))/([a-zA-Z0-9\-_]+)/([a-zA-Z0-9\-_]+)/([a-zA-Z0-9\-_]+)/([a-zA-Z0-9\-\._]+)
+output_dir = '/store/user/{0}/H2XXNanoPost/{1}/{2}'.format(username, args.year, prod_version.replace('.','p')) 
 print("Production output dir {0}".format(output_dir))
 
 samps = []
@@ -63,7 +66,7 @@ else:
     samps = args.samps
    
 ## Get the samples you want to make a crab config file for 
-version_str = '_prod_{0}_{1}'.format(args.year, prod_version)
+version_str = '_prod_{0}_{1}'.format(args.year, prod_version.replace('.','p'))
 print("Sample list: {0}".format(samps))
 
 crab_prod_dir = 'CRAB_%s-%s'%(time.strftime('%Y_%m_%d_%H_%M'),prod_version)
@@ -72,6 +75,8 @@ print('crab production directory = ' + crab_prod_dir)
 os.mkdir(crab_prod_dir)
 os.mkdir(crab_configs_dir)
 
+cms_dir = os.environ['CMSSW_BASE']
+print cms_dir
 
 for samp in samps:
     print '\nCreating crab config for %s' % samp.name
@@ -84,10 +89,10 @@ for samp in samps:
     # crab submission file that uses the above CMSSW analyzer
     for line in in_file:
         if 'requestName' in line:
-            line = line.replace("= 'STR'", "= '%s_%s%s'" % (samp.name, time.strftime('%Y_%m_%d_%H_%M'), version_str.replace(".","p")) ) 
+            line = line.replace("= 'STR'", "= '%s_%s%s'" % (samp.name, time.strftime('%Y_%m_%d_%H_%M'), version_str) ) 
 
         if 'scriptArgs' in line:
-            line = line.replace("= []", "= ['-modules %s', '-outfile %s']" %(' '.join(args.mods), args.outfile)) 
+            line = line.replace("= []", "= ['modules=%s', 'outfile=%s']" %(','.join(args.mods), args.outfile)) 
  
         if 'outputFiles' in line:
             line = line.replace("= []", "= ['%s']" %(args.outfile))
@@ -145,6 +150,6 @@ out_file.write('\n')
 # out_file.write('voms-proxy-init --voms cms --valid 168:00\n')
 out_file.write('\n')
 for samp in samps:
-    out_file.write('crab status -d logs/crab_%s_%s%s\n' % (samp.name, time.strftime('%Y_%m_%d_%H_%M'), version_str.replace(".","p")) )
+    out_file.write('crab status -d CRAB_logs/crab_%s_%s%s\n' % (samp.name, time.strftime('%Y_%m_%d_%H_%M'), version_str) )
 out_file.close()
 os.chmod('%s/check_all.sh' % crab_prod_dir, 0o744)

@@ -1,20 +1,22 @@
 from WMCore.Configuration import Configuration
 from CRABClient.UserUtilities import config, getUsername
+import os
 
 config = config()
 
 config.section_("General")
 #config.General.requestName = 'H2XX_Nano'
 config.General.requestName = 'STR'
+config.General.workArea = 'CRAB_logs'
 config.General.transferLogs = True
 config.General.transferOutputs = True #Not really needed, default is True
 
 config.section_("JobType")
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'PhysicsTools/UFHmmPhysicsTools/crab/templates/PSet.py'
-config.JobType.scriptExe = 'PhysicsTools/UFHmmPhysicsTools/crab/crab_script.sh'
+config.JobType.psetName = '%s/src/PhysicsTools/UFHmmPhysicsTools/crab/templates/PSet.py'%os.environ['CMSSW_BASE']
+config.JobType.scriptExe = '%s/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_script.sh'%os.environ['CMSSW_BASE']
 # hadd nano will not be needed once nano tools are in cmssw
-config.JobType.inputFiles = ['PhysicsTools/UFHmmPhysicsTools/crab/crab_script.py', 'PhysicsTools/NanoAODTools/scripts/haddnano.py']
+config.JobType.inputFiles = ['%s/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_script.py'%os.environ['CMSSW_BASE'], '%s/src/PhysicsTools/NanoAODTools/scripts/haddnano.py'%os.environ['CMSSW_BASE']]
 # Specify this output name only once, so it is not lost in CRAB.
 #config.JobType.scriptArgs = ['dataset=ggH', 'modules=analyzers.hmmAnalyzer']
 config.JobType.scriptArgs = []

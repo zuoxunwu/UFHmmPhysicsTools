@@ -9,23 +9,31 @@ import json
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 
 if __name__ == "__main__":
-    import argparse
     print sys.argv
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("jobID", help = "dummy arg to take jobID. Not used in this script.")
-    parser.add_argument("-m", "--modules", nargs='*', dest="modules", default  = [],
-                 help = "modules to run")
-    parser.add_argument("-o", "--outfile", dest="outfile", default  = None,
-                 help = "histFileName")
+    jobNumber = sys.argv[1]
+    module_names = sys.argv[2].split('=')[1].split(',')
+    outfile = sys.argv[3].split('=')[1]
 
-    args = parser.parse_args()
-    if not args.modules:
+#    parser = argparse.ArgumentParser()
+#    parser.add_argument("jobID", help = "dummy arg to take jobID. Not used in this script.")
+#    parser.add_argument("-m", "--modules", nargs='*', dest="modules", default  = [],
+#                 help = "modules to run")
+#    parser.add_argument("-o", "--outfile", dest="outfile", default  = None,
+#                 help = "histFileName")
+#
+#    args = parser.parse_args()
+#    if not args.modules:
+#        print 'No module to run. Exiting.'
+#        sys.exit()    
+
+    if not module_names:
         print 'No module to run. Exiting.'
-        sys.exit()    
+        sys.exit()
 
     modules = []
-    for names in args.modules:
+    for names in module_names:
+        names = names.replace('modules=', '')
         mod = "PhysicsTools.UFHmmPhysicsTools." + names.rsplit('.', 1)[0]
         name = names.rsplit('.', 1)[1]
         import_module(mod)
@@ -44,7 +52,7 @@ if __name__ == "__main__":
                       modules=modules,
                       provenance=True,
                       fwkJobReport=True, # This option is essential for the NanoAOD Tool to make a FrameworkJobReport.xml
-                      histFileName=args.outfile,
+                      histFileName=outfile,
                       histDirName='plots',
 #                      noOut=noOut,
                       jsonInput=runsAndLumis() # Will need json for lumi when running on data. Json should be given in PSet.py. If no json is found it returns None, which is the default value of this arg.
