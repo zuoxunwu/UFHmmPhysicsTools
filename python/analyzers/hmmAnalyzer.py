@@ -166,7 +166,7 @@ class hmmAnalyzer(Module):
             return True
         #Applying GenPart cut for MC
         checkGenParents, p4_FSR = self.checkGenParents(muons, genPart)
-        print p4_FSR, checkGenParents
+#        print (p4_FSR.Pt() if p4_FSR else p4_FSR), checkGenParents
         if(not checkGenParents and not p4_FSR):
             self.eta_gen_cut.Fill(muons[0].eta)
             self.eta_gen_cut.Fill(muons[1].eta)
