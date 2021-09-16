@@ -61,7 +61,7 @@ if __name__ == "__main__":
         if 'cern.ch' in host:
           prefix = 'root://xrootd-cms.infn.it//'
         for f in config[options.dataset]["files"]:
-            args.append(config[options.dataset]["outputDir"])
+#            args.append(config[options.dataset]["outputDir"])  # Small bug, see L79, outputs will be taken as inputs. Comment out for now. To be discussed: this functionality probably not needed anyway. - XWZ Sep 07 2021
             args.append(prefix + f)
         if(len(args)==0):
             args.append("True")
