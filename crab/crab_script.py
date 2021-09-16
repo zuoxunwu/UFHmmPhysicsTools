@@ -11,21 +11,10 @@ ROOT.PyConfig.IgnoreCommandLineOptions = True
 if __name__ == "__main__":
     print sys.argv
 
+    # CRAB only allow the scriptArgs in the form "param=value". So optparser is not useful here. - XWZ Sep 16 2021
     jobNumber = sys.argv[1]
     module_names = sys.argv[2].split('=')[1].split(',')
     outfile = sys.argv[3].split('=')[1]
-
-#    parser = argparse.ArgumentParser()
-#    parser.add_argument("jobID", help = "dummy arg to take jobID. Not used in this script.")
-#    parser.add_argument("-m", "--modules", nargs='*', dest="modules", default  = [],
-#                 help = "modules to run")
-#    parser.add_argument("-o", "--outfile", dest="outfile", default  = None,
-#                 help = "histFileName")
-#
-#    args = parser.parse_args()
-#    if not args.modules:
-#        print 'No module to run. Exiting.'
-#        sys.exit()    
 
     if not module_names:
         print 'No module to run. Exiting.'

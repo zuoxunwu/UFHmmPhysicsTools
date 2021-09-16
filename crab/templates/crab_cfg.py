@@ -28,7 +28,6 @@ config.section_("Data")
 config.Data.inputDataset = 'STR'
 config.Data.inputDBS = 'DBS'
 # config.Data.lumiMask = 'STR'
-#Best not to use Automatic splitting. More details in Crab_README - XWZ Sep 10 2021
 #config.Data.splitting = 'Automatic'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 2
