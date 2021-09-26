@@ -11,6 +11,9 @@ drop genTtbarId
 keep run
 keep luminosityBlock
 keep event
+keep Muon_ptErr
+keep Muon_dxyErr
+keep Muon_corrected*
 
 # If a custom branch starts with an upper case letter (dropped by the command above),
 # it should be explicitly kept here

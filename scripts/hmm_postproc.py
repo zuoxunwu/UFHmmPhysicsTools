@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
     if(options.dataset):
-        config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config.txt", "r")
+        config_file = open("PhysicsTools/UFHmmPhysicsTools/scripts/dataset_config_xunwu.txt", "r")
         config_file_contents = config_file.read()
         config = json.loads(config_file_contents)
         # check internet host
