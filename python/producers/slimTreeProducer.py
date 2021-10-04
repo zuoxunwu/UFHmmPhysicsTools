@@ -22,6 +22,7 @@ class slimTreeProducer(Module):
 
         print "initiating branches"
         self.out.branch('nmuons', 'I')
+        self.out.branch('muon_pass', 'I', lenVar = 'nmuons')
         self.out.branch('muon_charge', 'I', lenVar = 'nmuons')
         self.out.branch('muon_pt_gen', 'F', lenVar = 'nmuons')
         self.out.branch('muon_eta', 'F', lenVar = 'nmuons')
@@ -47,7 +48,7 @@ class slimTreeProducer(Module):
                              _pt_corr = "Roch", _min_pt = 20, _max_eta = 2.4,
                              _max_d0PV = 0.05, _max_dzPV = 0.1, _min_lepMVA = -1)
 
-
+        mu_pass    = []
         mu_charge  = []
         mu_eta     = []
         mu_phi     = []
@@ -55,7 +56,8 @@ class slimTreeProducer(Module):
         mu_pt_gen  = []
 
         for mu in muons:
-            if not muSel.evalMuon(mu): continue
+            if muSel.evalMuon(mu): mu_pass.append(1)
+            else:                  mu_pass.append(0)
             mu_charge.append(mu.charge)
             mu_eta   .append(mu.eta)
             mu_phi   .append(mu.phi)
@@ -64,7 +66,7 @@ class slimTreeProducer(Module):
             if mu.genPartFlav == 1:  pt_gen = genPart[mu.genPartIdx].pt  #check matching criteria in nanoAOD -- XWZ 2021.07.27
             mu_pt_gen.append(pt_gen)
 
-
+        self.out.fillBranch('muon_pass', mu_pass)
         self.out.fillBranch('muon_charge', mu_charge)
         self.out.fillBranch('muon_eta', mu_eta)
         self.out.fillBranch('muon_phi', mu_phi)
