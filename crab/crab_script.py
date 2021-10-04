@@ -43,7 +43,8 @@ if __name__ == "__main__":
                       fwkJobReport=True, # This option is essential for the NanoAOD Tool to make a FrameworkJobReport.xml
                       histFileName=outfile,
                       histDirName='plots',
-#                      noOut=noOut,
-                      jsonInput=runsAndLumis() # Will need json for lumi when running on data. Json should be given in PSet.py. If no json is found it returns None, which is the default value of this arg.
+                      jsonInput=runsAndLumis(), # Will need json for lumi when running on data. Json should be given in PSet.py. If no json is found it returns None, which is the default value of this arg.
+                      branchsel       = "keep_and_drop_input.txt",
+                      outputbranchsel = "keep_and_drop_output.txt"
                       )
     p.run()

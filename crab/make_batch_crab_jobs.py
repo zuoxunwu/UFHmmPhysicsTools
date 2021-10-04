@@ -12,10 +12,12 @@ import subprocess
 import argparse # for options parsing
 
 # Default list for test runs or special runs
-SAMPS = [samples.ggH]
+SAMPS = [samples.DY_17_amc, samples.DY_17_mg, samples.DY_17_mg_ext1]
 # Default list for modules to tun. The last name is the module instance name, it can be different from the module class name. 
-MODS  =    ['analyzers.hmmAnalyzer.hmmAnalyzer'] 
+#MODS  =    ['analyzers.hmmAnalyzer.hmmAnalyzer'] 
 OUTFILE = 'hist_out.root'
+
+MODS = ['producers.slimTreeProducer.slimTree', 'producers.roccorProducer.roccor2018V5']
 
 parser = argparse.ArgumentParser(description="Pass arguments")
 parser.add_argument("-s", "--samples", nargs='*', dest='samps', default  = SAMPS,
@@ -107,6 +109,9 @@ for samp in samps:
         # With Automatic splitting, the output files of the first few jobs are not transfered.
         # Use 'FileBased' splitting for MC. For data 'LumiBased' is recommended. 
         # But NanoAOD files are already merged comparing to their MiniAOD parents. So maybe 'FileBased' is also good for data. To be tested. - XWZ Sep 15 2021
+
+#        if 'splitting' in line:
+#            line = line.replace('FileBased', 'Automatic')
 
         if 'unitsPerJob' in line: # Number of files per job for MC, or lumisections per job for data.
             if samp.isData:

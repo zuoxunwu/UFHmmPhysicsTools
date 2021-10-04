@@ -16,7 +16,10 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '%s/src/PhysicsTools/UFHmmPhysicsTools/crab/templates/PSet.py'%os.environ['CMSSW_BASE']
 config.JobType.scriptExe = '%s/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_script.sh'%os.environ['CMSSW_BASE']
 # hadd nano will not be needed once nano tools are in cmssw
-config.JobType.inputFiles = ['%s/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_script.py'%os.environ['CMSSW_BASE'], '%s/src/PhysicsTools/NanoAODTools/scripts/haddnano.py'%os.environ['CMSSW_BASE']]
+config.JobType.inputFiles = ['%s/src/PhysicsTools/UFHmmPhysicsTools/crab/crab_script.py'%os.environ['CMSSW_BASE'], 
+                             '%s/src/PhysicsTools/NanoAODTools/scripts/haddnano.py'%os.environ['CMSSW_BASE'],
+                             '%s/src/PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_input.txt'%os.environ['CMSSW_BASE'], 
+                             '%s/src/PhysicsTools/UFHmmPhysicsTools/scripts/keep_and_drop_output.txt'%os.environ['CMSSW_BASE']]
 # Specify this output name only once, so it is not lost in CRAB.
 #config.JobType.scriptArgs = ['dataset=ggH', 'modules=analyzers.hmmAnalyzer']
 config.JobType.scriptArgs = []
